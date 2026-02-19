@@ -38,10 +38,20 @@ export async function approveRequest(requestId: string, userId: string) {
         return
     }
 
-    // 2. Update User Profile Status
+    // 1.5 Get the main team
+    const { data: team } = await supabase
+        .from('teams')
+        .select('id')
+        .limit(1)
+        .single()
+
+    // 2. Update User Profile Status & Enforce Team Assignment
     const { error: profileError } = await supabase
         .from('profiles')
-        .update({ status: 'ACTIVE' })
+        .update({
+            status: 'ACTIVE',
+            ...(team ? { team_id: team.id } : {})
+        })
         .eq('id', userId)
 
     if (profileError) {
