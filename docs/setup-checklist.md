@@ -10,7 +10,7 @@ Please follow these steps one by one.
 2.  Click **"New Project"**.
 3.  **Organization**: Create one if needed (free).
 4.  **Name**: `huji-run`.
-5.  **Database Password**: `si%ap@G*dTvkz3m` (Saved).
+5.  **Database Password**: **[Saved in .env.local - KEEP SECRET]**.
 6.  **Region**: Choose `eu-central-1` (Frankfurt) or similar close to Israel/You.
 7.  Click **"Create new project"**.
 8.  Wait for it to setup (takes ~1 min).
