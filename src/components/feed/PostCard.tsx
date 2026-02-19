@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Card } from '@/components/ui/Card'
 import { formatDistance, formatDuration, formatPace, formatRelativeTime } from '@/lib/utils/format'
 import { MapPin, Heart, MessageCircle } from 'lucide-react'
@@ -17,9 +18,15 @@ export function PostCard({ post }: PostCardProps) {
             {/* Header: User Info */}
             <div className="p-6 flex items-center justify-between border-b border-slate-100/60">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-slate-100 overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-slate-100 overflow-hidden flex-shrink-0 border-2 border-white shadow-sm relative">
                         {profile?.avatar_url ? (
-                            <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                            <Image
+                                src={profile.avatar_url}
+                                alt={profile.full_name || 'Runner'}
+                                fill
+                                className="object-cover"
+                                sizes="48px"
+                            />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-[#fc4c02] font-bold bg-[#fff3eb]">
                                 {profile?.full_name?.charAt(0) || '?'}

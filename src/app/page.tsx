@@ -24,20 +24,8 @@ export default async function Home() {
         <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full bg-[#primary-blue]/5 blur-3xl opacity-30" />
       </div>
 
-      <Card className="max-w-md w-full text-center p-10 backdrop-blur-3xl border-white/40">
-        <div className="mb-6 flex justify-center">
-          <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-xl transform rotate-3 overflow-hidden border-4 border-white/50 relative">
-            <Image
-              src="/logo.png"
-              alt="HUJI Run Logo"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
-
-        <h1 className="text-4xl font-extrabold mb-3 tracking-tight text-gray-900">
+      <Card className="max-w-md w-full text-center p-10 backdrop-blur-3xl border-white/40 shadow-2xl">
+        <h1 className="text-4xl font-extrabold mb-3 tracking-tight text-gray-900 mt-2">
           HUJI <span className="text-[#e63946]">Run</span>
         </h1>
 
@@ -91,9 +79,7 @@ export default async function Home() {
         </div>
       </Card>
 
-      <p className="fixed bottom-6 text-xs text-gray-400">
-        © 2026 HUJI Run Team
-      </p>
+
     </main>
   );
 }

@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { PostCard } from '@/components/feed/PostCard'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import NextImage from 'next/image'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,9 +45,19 @@ export default async function FeedPage() {
     const { data: posts, error } = await supabase
         .from('posts')
         .select(`
-            *,
-            activities (*),
-            profiles:profiles!posts_user_id_fkey (full_name, avatar_url)
+            id,
+            created_at,
+            activities (
+                name,
+                distance,
+                moving_time,
+                average_speed,
+                map_polyline
+            ),
+            profiles:profiles!posts_user_id_fkey (
+                full_name,
+                avatar_url
+            )
         `)
         .eq('team_id', profile.team_id)
         .order('created_at', { ascending: false })
@@ -58,14 +69,14 @@ export default async function FeedPage() {
     }
 
     return (
-        <main className="min-h-screen bg-[#f8fafc] font-sans">
-            <div className="max-w-xl mx-auto p-4 md:p-8 space-y-8">
+        <main className="min-h-screen bg-[#f8fafc] px-4 pb-4 md:px-8 md:pb-8 pt-4 md:pt-8 font-sans">
+            <div className="max-w-xl mx-auto space-y-8">
                 <header className="flex flex-col items-center text-center gap-4 mb-10 pt-4">
                     <Link href="/dashboard" className="text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2 mb-2 transition-all font-[600] text-[14px] px-4 py-2.5 rounded-xl w-fit shadow-sm self-start">
                         <ArrowLeft size={16} strokeWidth={2.5} />
                         Back to Dashboard
                     </Link>
-                    <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none mt-2">
+                    <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none mt-1">
                         Team Feed<span className="text-[#2563eb]">.</span>
                     </h1>
                     <p className="text-[18px] text-[#64748b] font-medium">See what your team is up to</p>

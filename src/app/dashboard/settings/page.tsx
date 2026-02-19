@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Activity, Trash2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { revalidatePath } from 'next/cache'
+import NextImage from 'next/image'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -14,6 +15,7 @@ export default async function SettingsPage() {
         redirect('/login')
     }
 
+    // Check if user has connected Strava
     const { data: stravaAccount } = await supabase
         .from('strava_accounts')
         .select('*')
@@ -23,23 +25,20 @@ export default async function SettingsPage() {
     const disconnectStrava = async () => {
         'use server'
         const sb = await createClient()
-        const { data: { user } } = await sb.auth.getUser()
-        if (user) {
-            await sb.from('strava_accounts').delete().eq('user_id', user.id)
-            revalidatePath('/dashboard')
-            redirect('/dashboard')
-        }
+        await sb.from('strava_accounts').delete().eq('user_id', user.id)
+        revalidatePath('/dashboard')
+        redirect('/dashboard')
     }
 
     return (
-        <main className="min-h-screen bg-[#f8fafc] p-6 md:p-10 font-sans">
+        <main className="min-h-screen bg-[#f8fafc] px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 font-sans">
             <div className="max-w-xl mx-auto space-y-8">
-                <header className="flex flex-col items-center text-center gap-4 mb-10">
+                <header className="flex flex-col items-center text-center gap-4 mb-10 pt-4">
                     <Link href="/dashboard" className="text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2 mb-2 transition-all font-[600] text-[14px] px-4 py-2.5 rounded-xl w-fit shadow-sm self-start">
                         <ArrowLeft size={16} strokeWidth={2.5} />
                         Back to Dashboard
                     </Link>
-                    <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none mt-2">
+                    <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none mt-1">
                         Settings<span className="text-[#fc4c02]">.</span>
                     </h1>
                 </header>

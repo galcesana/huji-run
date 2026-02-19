@@ -2,69 +2,113 @@
 
 import React, { useActionState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { login, signInWithGoogle } from '../auth/actions'
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 
 export default function LoginPage() {
     const [state, formAction, isPending] = useActionState(login, null)
     const [googleState, googleAction, isGooglePending] = useActionState(signInWithGoogle, null)
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-8">
-            <div className="glass-panel w-full max-w-md p-8 rounded-2xl">
-                <h1 className="text-3xl font-bold text-center mb-6">Welcome Back</h1>
-
-                <form action={formAction} className="flex flex-col gap-4">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Email</label>
-                        <input
-                            name="email"
-                            type="email"
-                            required
-                            className="input-field"
-                            placeholder="runner@huji.ac.il"
+        <main className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 font-sans">
+            <div className="w-full max-w-md space-y-8">
+                {/* Branding Lockup */}
+                <div className="flex flex-col items-center gap-2 mb-4">
+                    <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 transform -rotate-2">
+                        <Image
+                            src="/logo-removebg.png"
+                            alt="HUJI Run"
+                            width={48}
+                            height={48}
+                            className="drop-shadow-sm"
+                            priority
                         />
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Password</label>
-                        <input
-                            name="password"
-                            type="password"
-                            required
-                            className="input-field"
-                            placeholder="••••••••"
-                        />
-                    </div>
-
-                    {state?.error && (
-                        <p className="text-red-500 text-sm text-center">{state.error}</p>
-                    )}
-
-                    <button disabled={isPending} className="primary-btn w-full mt-2">
-                        {isPending ? 'Logging in...' : 'Log In'}
-                    </button>
-                </form>
-
-                <div className="my-6 flex items-center gap-2 opacity-50">
-                    <div className="h-px bg-current flex-1" />
-                    <span className="text-sm">OR</span>
-                    <div className="h-px bg-current flex-1" />
+                    <h2 className="font-[900] text-[24px] text-[#0f172a] tracking-[-0.04em] uppercase mt-2">
+                        HUJI<span className="text-[#fc4c02] italic ml-0.5">RUN</span>
+                    </h2>
                 </div>
 
-                <form action={googleAction}>
-                    {googleState?.error && (
-                        <p className="text-red-500 text-sm text-center mb-2">{googleState.error}</p>
-                    )}
-                    <button disabled={isGooglePending} className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-                        {isGooglePending ? 'Directing...' : 'Sign in with Google'}
-                    </button>
-                </form>
+                <Card className="p-8 md:p-10 rounded-[32px] border-0 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] bg-white relative overflow-hidden">
+                    <div className="relative z-10">
+                        <div className="text-center mb-10">
+                            <h1 className="text-[32px] font-[800] text-[#0f172a] tracking-tight leading-none mb-3">
+                                Welcome Back<span className="text-[#fc4c02]">.</span>
+                            </h1>
+                            <p className="text-slate-500 font-medium">Ready for today's miles?</p>
+                        </div>
 
-                <p className="text-center mt-6 text-sm">
+                        <form action={formAction} className="space-y-5">
+                            <div className="space-y-2">
+                                <label className="block text-[14px] font-[700] text-[#0f172a] ml-1">Email Address</label>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    required
+                                    className="w-full bg-[#f8fafc] border-0 rounded-2xl px-5 py-4 text-[15px] font-medium focus:ring-2 focus:ring-[#fc4c02]/20 transition-all outline-none placeholder-slate-400"
+                                    placeholder="runner@huji.ac.il"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-[14px] font-[700] text-[#0f172a] ml-1">Password</label>
+                                <input
+                                    name="password"
+                                    type="password"
+                                    required
+                                    className="w-full bg-[#f8fafc] border-0 rounded-2xl px-5 py-4 text-[15px] font-medium focus:ring-2 focus:ring-[#fc4c02]/20 transition-all outline-none placeholder-slate-400"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+
+                            {state?.error && (
+                                <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-semibold text-center border border-red-100">
+                                    {state.error}
+                                </div>
+                            )}
+
+                            <Button
+                                type="submit"
+                                disabled={isPending}
+                                className="w-full h-[60px] bg-[#0f172a] hover:bg-black text-white rounded-2xl text-[16px] font-[700] shadow-lg shadow-slate-200 transition-all active:scale-[0.98] mt-4"
+                            >
+                                {isPending ? 'Signing In...' : 'Sign In'}
+                            </Button>
+                        </form>
+
+                        <div className="relative my-8">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-slate-100"></div>
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-white px-4 text-slate-400 font-bold tracking-widest">OR</span>
+                            </div>
+                        </div>
+
+                        <form action={googleAction}>
+                            {googleState?.error && (
+                                <p className="text-red-500 text-sm text-center mb-2">{googleState.error}</p>
+                            )}
+                            <button
+                                disabled={isGooglePending}
+                                className="w-full h-[60px] bg-white border border-slate-200 text-[#0f172a] font-[700] rounded-2xl flex items-center justify-center gap-3 hover:bg-slate-50 transition-all active:scale-[0.98] shadow-sm"
+                            >
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                                {isGooglePending ? 'Connecting...' : 'Sign in with Google'}
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Subtle aesthetic accent */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#fc4c02]/5 rounded-bl-[100px] -z-0 blur-2xl" />
+                </Card>
+
+                <p className="text-center text-slate-500 font-medium text-[15px]">
                     Don't have an account?{' '}
-                    <Link href="/signup" className="font-semibold underline">
-                        Sign up
+                    <Link href="/signup" className="text-[#0f172a] font-[800] underline decoration-[#fc4c02] decoration-2 underline-offset-4 hover:text-[#fc4c02] transition-colors">
+                        Join the Team
                     </Link>
                 </p>
             </div>

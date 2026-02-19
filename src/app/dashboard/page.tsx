@@ -1,9 +1,10 @@
 
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import NextImage from 'next/image'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Activity, CheckCircle, AlertCircle } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
     const supabase = await createClient()
@@ -16,14 +17,14 @@ export default async function DashboardPage() {
     // Check if user has connected Strava
     const { data: stravaAccount } = await supabase
         .from('strava_accounts')
-        .select('*')
+        .select('updated_at')
         .eq('user_id', user.id)
         .single()
 
     const isConnected = !!stravaAccount
 
     return (
-        <main className="min-h-screen bg-[#f8fafc] p-6 md:p-10 font-sans">
+        <main className="min-h-screen bg-[#f8fafc] px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 font-sans">
             <div className="max-w-xl mx-auto space-y-8">
                 <header className="flex flex-col items-center text-center gap-2 mb-10">
                     <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none">
