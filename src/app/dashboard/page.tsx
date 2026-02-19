@@ -23,64 +23,115 @@ export default async function DashboardPage() {
     const isConnected = !!stravaAccount
 
     return (
-        <main className="min-h-screen p-4 md:p-8 space-y-8 max-w-4xl mx-auto">
-            <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-                    <p className="text-gray-500">Welcome back, Runner!</p>
-                </div>
+        <main className="min-h-screen bg-[#f8fafc] p-6 md:p-10 font-sans">
+            <div className="max-w-xl mx-auto space-y-8">
+                <header className="flex flex-col items-center text-center gap-2 mb-10">
+                    <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none">
+                        Dashboard<span className="text-[#fc4c02]">.</span>
+                    </h1>
+                    <p className="text-[18px] text-[#64748b] font-medium">Welcome back, Runner!</p>
 
-                {!isConnected && (
-                    <div className="bg-orange-50 text-orange-800 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-                        <AlertCircle size={16} />
-                        <span>Action Required: Connect Strava</span>
-                    </div>
-                )}
-            </header>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Connection Status Card */}
-                <Card className="p-6 space-y-4">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-[#fc4c02]/10 p-2 rounded-lg text-[#fc4c02]">
-                            <Activity size={24} />
+                    {!isConnected && (
+                        <div className="mt-6 bg-orange-50 border border-orange-200 text-orange-800 px-5 py-3 rounded-xl text-sm font-medium flex items-center gap-3 shadow-sm inline-flex w-fit max-w-full">
+                            <AlertCircle size={20} className="text-[#fc4c02]" />
+                            <span>Action Required: Connect Strava to see your runs.</span>
                         </div>
-                        <h2 className="text-xl font-bold">Strava Connection</h2>
-                    </div>
-
-                    <p className="text-gray-600 text-sm">
-                        Connect your Strava account to automatically import your runs and participate in the team leaderboard.
-                    </p>
-
-                    {isConnected ? (
-                        <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
-                            <CheckCircle className="text-green-600" size={24} />
-                            <div>
-                                <p className="font-semibold text-green-900">Connected</p>
-                                <p className="text-xs text-green-700">Last synced: {new Date(stravaAccount.updated_at).toLocaleDateString()}</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <form action="/api/auth/strava" method="GET">
-                            <Button className="w-full bg-[#fc4c02] hover:bg-[#e34402] text-white">
-                                Connect with Strava
-                            </Button>
-                        </form>
                     )}
-                </Card>
+                </header>
 
-                {/* Recent Activity Placeholder */}
-                <Card className="p-6 space-y-4 opacity-50 pointer-events-none grayscale">
-                    <div className="flex items-center justify-between mb-2">
-                        <h2 className="text-xl font-bold">Recent Activities</h2>
-                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">Coming Soon</span>
-                    </div>
-                    <div className="space-y-3">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="h-16 bg-gray-100 rounded-lg animate-pulse" />
-                        ))}
-                    </div>
-                </Card>
+                <div className="flex flex-col gap-6">
+                    {!isConnected ? (
+                        <>
+                            {/* Action Required: Connection Status Card */}
+                            <Card className="p-7 bg-white border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] rounded-[24px] flex flex-col items-center text-center ring-2 ring-orange-500 ring-offset-4 ring-offset-[#f8fafc]">
+                                <div className="flex flex-col items-center gap-3 mb-4">
+                                    <div className="bg-[#fff3eb] w-14 h-14 flex items-center justify-center rounded-[14px] text-[#fc4c02]">
+                                        <Activity size={28} strokeWidth={2} />
+                                    </div>
+                                    <h2 className="text-[22px] font-[700] text-[#0f172a] tracking-tight">Strava Connection</h2>
+                                </div>
+
+                                <p className="text-[#475569] leading-[1.6] text-[15.5px] mb-6 max-w-sm">
+                                    Connect your Strava account to automatically import your runs and participate in the team leaderboard.
+                                </p>
+
+                                <form action="/api/auth/strava" method="GET" className="pt-1 w-full max-w-[280px] flex justify-center">
+                                    <Button className="bg-[#fc4c02] hover:bg-[#e34402] text-white px-8 py-6 rounded-[16px] text-[16px] font-bold shadow-md shadow-orange-500/20 w-full transition-transform active:scale-95">
+                                        Connect with Strava
+                                    </Button>
+                                </form>
+                            </Card>
+
+                            {/* Team Feed Link Card (Secondary when disconnected) */}
+                            <Card className="p-7 bg-white border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] rounded-[24px] flex flex-col items-center text-center opacity-70 grayscale-[20%] transition-opacity hover:opacity-100 hover:grayscale-0">
+                                <div className="flex flex-col items-center gap-3 mb-4">
+                                    <div className="bg-[#eff6ff] w-14 h-14 flex items-center justify-center rounded-[14px] text-[#2563eb]">
+                                        <Activity size={28} strokeWidth={2} />
+                                    </div>
+                                    <h2 className="text-[22px] font-[700] text-[#0f172a] tracking-tight">Team Feed</h2>
+                                </div>
+
+                                <p className="text-[#475569] leading-[1.6] text-[15.5px] mb-6 max-w-sm">
+                                    Check out your team's latest runs, give kudos, and stay motivated together.
+                                </p>
+
+                                <div className="pt-1 w-full max-w-[280px] flex justify-center">
+                                    <a href="/dashboard/feed" className="block relative z-10 w-full">
+                                        <Button className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-10 py-6 rounded-[100px] text-[16px] font-[600] items-center flex justify-center w-full">
+                                            View Team Feed
+                                        </Button>
+                                    </a>
+                                </div>
+                            </Card>
+                        </>
+                    ) : (
+                        <>
+                            {/* Primary Action: Team Feed Link Card */}
+                            <Card className="p-8 bg-white border-0 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)] rounded-[28px] flex flex-col items-center text-center relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-[#1d4ed8]"></div>
+                                <div className="flex flex-col items-center gap-3 mb-5 mt-2">
+                                    <div className="bg-[#eff6ff] w-16 h-16 flex items-center justify-center rounded-[18px] text-[#2563eb]">
+                                        <Activity size={32} strokeWidth={2} />
+                                    </div>
+                                    <h2 className="text-[26px] font-[800] text-[#0f172a] tracking-tight mt-1">Team Feed</h2>
+                                </div>
+
+                                <p className="text-[#475569] leading-[1.6] text-[16px] mb-8 max-w-md">
+                                    Check out your team's latest runs, give kudos, and stay motivated together.
+                                </p>
+
+                                <div className="w-full max-w-[320px] flex justify-center pb-2">
+                                    <a href="/dashboard/feed" className="block relative z-10 w-full">
+                                        <Button className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-10 py-6 rounded-[100px] text-[17px] font-[700] items-center flex justify-center w-full shadow-lg shadow-blue-500/30 transition-transform active:scale-95">
+                                            Open Team Feed
+                                        </Button>
+                                    </a>
+                                </div>
+                            </Card>
+
+                            {/* Secondary Info: Compact Strava Status */}
+                            <div className="flex items-center justify-between bg-white border border-slate-200/60 shadow-sm rounded-[20px] px-5 py-4 w-full">
+                                <div className="flex items-center gap-4">
+                                    <div className="bg-[#fff3eb] w-12 h-12 flex items-center justify-center rounded-full text-[#fc4c02]">
+                                        <Activity size={22} strokeWidth={2} />
+                                    </div>
+                                    <div className="flex flex-col items-start gap-1">
+                                        <div className="flex items-center gap-1.5">
+                                            <p className="font-[700] text-[#0f172a] text-[15px] tracking-tight leading-none mt-0.5">Strava Connected</p>
+                                            <CheckCircle className="text-[#16a34a]" size={15} strokeWidth={3} />
+                                        </div>
+                                        <p className="text-[13px] font-medium text-slate-500 leading-none">Last synced: {new Date(stravaAccount.updated_at).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                                <a href="/dashboard/settings" className="flex">
+                                    <Button variant="ghost" className="text-slate-500 hover:text-[#0f172a] hover:bg-slate-100 h-9 text-[13px] font-[600] rounded-[10px] px-4 w-full">
+                                        Manage
+                                    </Button>
+                                </a>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </main>
     )

@@ -5,11 +5,16 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { MapPin, Users, Activity } from "lucide-react";
 import Image from "next/image";
+import { redirect } from 'next/navigation';
 
 
 export default async function Home() {
   const supabase = createClient();
   const { data: { user } } = await (await supabase).auth.getUser();
+
+  if (user) {
+    redirect('/dashboard');
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
