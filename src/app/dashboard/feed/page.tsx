@@ -21,10 +21,6 @@ export default async function FeedPage() {
             <main className="min-h-screen bg-[#f8fafc] font-sans">
                 <div className="max-w-xl mx-auto p-4 md:p-8 space-y-8">
                     <header className="flex flex-col items-center text-center gap-4 mb-4 pt-4">
-                        <Link href="/dashboard" className="text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2 mb-2 transition-all font-[600] text-[14px] px-4 py-2.5 rounded-xl w-fit shadow-sm self-start">
-                            <ArrowLeft size={16} strokeWidth={2.5} />
-                            Back to Dashboard
-                        </Link>
                     </header>
                     <div className="text-center p-12 bg-white rounded-[24px] border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] flex flex-col items-center gap-4">
                         <h3 className="text-[20px] font-[700] text-[#0f172a] tracking-tight">You are not part of a team yet.</h3>
@@ -63,10 +59,6 @@ export default async function FeedPage() {
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-4 md:px-8 md:pb-8 pt-4 md:pt-8 font-sans">
             <div className="max-w-xl mx-auto space-y-8">
                 <header className="flex flex-col items-center text-center gap-4 mb-10 pt-4">
-                    <Link href="/dashboard" className="text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2 mb-2 transition-all font-[600] text-[14px] px-4 py-2.5 rounded-xl w-fit shadow-sm self-start">
-                        <ArrowLeft size={16} strokeWidth={2.5} />
-                        Back to Dashboard
-                    </Link>
                     <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none mt-1">
                         Team Feed<span className="text-[#2563eb]">.</span>
                     </h1>
