@@ -17,9 +17,12 @@ export default async function PendingPage() {
                     Your request is waiting for coach approval. You'll get access to the feed and meetups once approved.
                 </p>
 
-                <button className="px-6 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-500 cursor-not-allowed">
-                    Connect Strava (Locked)
-                </button>
+                <a
+                    href="/api/auth/strava"
+                    className="px-6 py-2 rounded-full border border-[#fc4c02] bg-[#fc4c02]/10 text-sm font-medium text-[#fc4c02] hover:bg-[#fc4c02]/20 transition-colors"
+                >
+                    Connect Strava
+                </a>
 
                 <form action="/auth/signout" method="post" className="mt-8">
                     <button className="text-xs text-red-500 hover:underline">

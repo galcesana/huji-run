@@ -31,7 +31,7 @@ export default function SignupPage() {
                             type="email"
                             required
                             className="input-field"
-                            placeholder="runner@huji.ac.il"
+                            placeholder="runner@mail.huji.ac.il"
                         />
                     </div>
 

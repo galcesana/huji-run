@@ -47,11 +47,11 @@ export async function GET(request: NextRequest) {
     .from('strava_accounts')
     .upsert({
       user_id: user.id,
-      strava_id: tokens.athlete.id.toString(),
+      athlete_id: Number(tokens.athlete.id),
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
       expires_at: tokens.expires_at,
-      profile_url: tokens.athlete.profile,
+      profile_picture: tokens.athlete.profile,
     })
 
   if (dbError) {
