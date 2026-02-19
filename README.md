@@ -1,75 +1,36 @@
-# HUJI Run PWA
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Welcome to the HUJI Run PWA project! This is a private application designed for the HUJI Run team to manage members, coordinate runs, and track progress using Strava data.
+## Getting Started
 
-## 🚀 Getting Started
+First, run the development server:
 
-### Prerequisites
-- Node.js (Latest LTS recommended)
-- PostgreSQL Database
-- Strava API Credentials
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Installation
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd huji-run
-    ```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    # or
-    yarn install
-    # or
-    pnpm install
-    # or
-    bun install
-    ```
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-3.  **Set up environment variables:**
-    Copy `.env.example` to `.env.local` and fill in the required values:
-    ```env
-    DATABASE_URL="postgresql://user:password@localhost:5432/huji_run"
-    NEXTAUTH_SECRET="your-secret-key"
-    STRAVA_CLIENT_ID="your-strava-client-id"
-    STRAVA_CLIENT_SECRET="your-strava-client-secret"
-    ```
+## Learn More
 
-4.  **Run the development server:**
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    # or
-    pnpm dev
-    # or
-    bun dev
-    ```
+To learn more about Next.js, take a look at the following resources:
 
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## 📚 Documentation
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Detailed documentation can be found in the `docs/` directory:
+## Deploy on Vercel
 
--   [**Roadmap & Phases**](docs/roadmap.md): The implementation plan and milestones.
--   [**Product Spec**](docs/spec.md): Full product requirements and design.
--   [**Tech Stack**](docs/tech-stack.md): Architectural decisions and technologies.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 🛠 Features
-
--   **Team Management**: Coach/Member roles, approval workflow.
--   **Strava Integration**: OAuth connection, activity import.
--   **Social Feed**: Team-only activity feed with kudos/comments.
--   **Meetups**: Event creation and RSVP.
--   **Insights**: Team and member statistics.
-
-## 🤝 Contributing
-
-This is a private repository for the HUJI Run team.
-
-## License
-
-Private.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
