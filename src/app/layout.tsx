@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: "Official team app for HUJI Run club",
   manifest: "/manifest.json",
   icons: {
-    icon: "/logo.jpeg",
-    apple: "/logo.jpeg"
+    icon: "/logo.png",
+    apple: "/logo.png"
   }
 };
 
