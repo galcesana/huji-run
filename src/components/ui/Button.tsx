@@ -1,12 +1,12 @@
 
 'use client'
 
-import { motion } from 'framer-motion'
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { motion, HTMLMotionProps } from 'framer-motion'
+import { ReactNode } from 'react'
 import { Loader2 } from 'lucide-react'
 import clsx from 'clsx'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends HTMLMotionProps<"button"> {
     variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'google'
     isLoading?: boolean
     children: ReactNode

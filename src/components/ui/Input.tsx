@@ -1,10 +1,10 @@
 
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, HTMLMotionProps } from 'framer-motion'
 import clsx from 'clsx'
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends HTMLMotionProps<"input"> {
     label?: string
     error?: string
 }

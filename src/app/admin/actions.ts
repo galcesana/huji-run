@@ -33,7 +33,10 @@ export async function approveRequest(requestId: string, userId: string) {
         .update({ status: 'APPROVED' })
         .eq('id', requestId)
 
-    if (reqError) return { error: 'Failed to update request' }
+    if (reqError) {
+        console.error('Failed to update request:', reqError)
+        return
+    }
 
     // 2. Update User Profile Status
     const { error: profileError } = await supabase
@@ -41,7 +44,10 @@ export async function approveRequest(requestId: string, userId: string) {
         .update({ status: 'ACTIVE' })
         .eq('id', userId)
 
-    if (profileError) return { error: 'Failed to activate user' }
+    if (profileError) {
+        console.error('Failed to activate user:', profileError)
+        return
+    }
 
     revalidatePath('/admin')
 }
@@ -54,7 +60,10 @@ export async function rejectRequest(requestId: string) {
         .update({ status: 'REJECTED' })
         .eq('id', requestId)
 
-    if (error) return { error: 'Failed to reject request' }
+    if (error) {
+        console.error('Failed to reject request:', error)
+        return
+    }
 
     revalidatePath('/admin')
 }
