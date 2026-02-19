@@ -29,7 +29,7 @@ export default async function Home() {
         <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
           HUJI Run
         </h1>
-        <p style={{ marginBottom: '2rem', opcode: 0.9 }}>
+        <p style={{ marginBottom: '2rem', opacity: 0.9 }}>
           The official team app. Track runs, join meetups, and stay connected.
         </p>
 
