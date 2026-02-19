@@ -156,4 +156,4 @@ create trigger on_auth_user_created
   for each row execute procedure public.handle_new_user();
 
 -- SEED DATA (Optional: Create a default team)
-insert into teams (name, join_code) values ('HUJI Run', 'HUJI2024');
+insert into teams (name, join_code) values ('HUJI Run', 'HUJI2026');
