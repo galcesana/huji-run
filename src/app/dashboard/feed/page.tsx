@@ -46,7 +46,7 @@ export default async function FeedPage() {
         .select(`
             *,
             activities (*),
-            profiles (full_name, avatar_url)
+            profiles:profiles!posts_user_id_fkey (full_name, avatar_url)
         `)
         .eq('team_id', profile.team_id)
         .order('created_at', { ascending: false })
