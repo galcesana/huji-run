@@ -4,16 +4,17 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Activity, CheckCircle, AlertCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) {
         redirect('/login')
     }
 
+    const supabase = await createClient()
     // Check if user has connected Strava
     const { data: stravaAccount } = await supabase
         .from('strava_accounts')

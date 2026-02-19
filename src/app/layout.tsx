@@ -17,27 +17,15 @@ export const metadata: Metadata = {
 };
 
 import { Navigation } from "@/components/layout/Navigation";
-import { createClient } from "@/lib/supabase/server";
-
-export const dynamic = 'force-dynamic'
+import { getProfile } from "@/lib/supabase/data";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  let role = null;
-  if (user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single();
-    role = profile?.role || null;
-  }
+  const profile = await getProfile();
+  const role = profile?.role || null;
 
   return (
     <html lang="en" suppressHydrationWarning>

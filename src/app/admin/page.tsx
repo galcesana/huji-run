@@ -1,22 +1,16 @@
 
 import { createClient } from '@/lib/supabase/server'
+import { getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 import { approveRequest, rejectRequest } from './actions'
 
 export default async function AdminPage() {
-    const supabase = await createClient()
+    // 1. Verify Coach Access using memoized profile
+    const profile = await getProfile()
 
-    // 1. Verify Coach Access
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) redirect('/login')
+    if (!profile) redirect('/login')
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-
-    if (profile?.role !== 'COACH' && profile?.role !== 'CO_COACH') {
+    if (profile.role !== 'COACH' && profile.role !== 'CO_COACH') {
         return (
             <div className="flex min-h-screen items-center justify-center p-8">
                 <div className="glass-panel p-8 rounded-2xl text-center">
@@ -26,6 +20,8 @@ export default async function AdminPage() {
             </div>
         )
     }
+
+    const supabase = await createClient()
 
     // 2. Fetch Pending Requests
     const { data: requests } = await supabase

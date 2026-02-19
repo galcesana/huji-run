@@ -1,26 +1,20 @@
 import { createClient } from '@/lib/supabase/server'
+import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 import { PostCard } from '@/components/feed/PostCard'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import NextImage from 'next/image'
 
-export const dynamic = 'force-dynamic'
-
 export default async function FeedPage() {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) {
         redirect('/login')
     }
 
-    // 1. Get the current user's team_id
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('team_id')
-        .eq('id', user.id)
-        .single()
+    // 1. Get the current user's profile/team_id (Memoized)
+    const profile = await getProfile()
 
     if (!profile?.team_id) {
         return (
@@ -41,7 +35,9 @@ export default async function FeedPage() {
         )
     }
 
-    // 2. Fetch posts belonging to this team, including the activity and profile data
+    const supabase = await createClient()
+
+    // 2. Fetch posts belonging to this team (Team-wide fetch)
     const { data: posts, error } = await supabase
         .from('posts')
         .select(`
@@ -62,11 +58,6 @@ export default async function FeedPage() {
         .eq('team_id', profile.team_id)
         .order('created_at', { ascending: false })
         .limit(20)
-
-    if (error) {
-        console.error("Error fetching feed:", error)
-        return <div className="p-8 text-center text-red-500">Failed to load team feed.</div>
-    }
 
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-4 md:px-8 md:pb-8 pt-4 md:pt-8 font-sans">
