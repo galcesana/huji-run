@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
-export async function joinTeam(formData: FormData) {
+export async function joinTeam(prevState: any, formData: FormData) {
     const supabase = await createClient()
     const code = formData.get('code') as string
     const note = formData.get('note') as string

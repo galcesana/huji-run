@@ -1,7 +1,11 @@
+'use client'
 
+import React, { useActionState } from 'react'
 import { joinTeam } from './actions'
 
 export default function OnboardingPage() {
+    const [state, formAction, isPending] = useActionState(joinTeam, null)
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gray-50">
             <div className="glass-panel w-full max-w-md p-8 rounded-2xl">
@@ -10,7 +14,7 @@ export default function OnboardingPage() {
                     Enter the code provided by your coach to request access.
                 </p>
 
-                <form className="flex flex-col gap-4">
+                <form action={formAction} className="flex flex-col gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1">Team Code</label>
                         <input
@@ -32,8 +36,12 @@ export default function OnboardingPage() {
                         />
                     </div>
 
-                    <button formAction={joinTeam} className="primary-btn w-full mt-2">
-                        Send Request
+                    {state?.error && (
+                        <p className="text-red-500 text-sm text-center">{state.error}</p>
+                    )}
+
+                    <button disabled={isPending} className="primary-btn w-full mt-2">
+                        {isPending ? 'Sending Request...' : 'Send Request'}
                     </button>
                 </form>
             </div>

@@ -1,14 +1,18 @@
+'use client'
 
+import React, { useActionState } from 'react'
 import Link from 'next/link'
 import { signup } from '../auth/actions'
 
 export default function SignupPage() {
+    const [state, formAction, isPending] = useActionState(signup, null)
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-8">
             <div className="glass-panel w-full max-w-md p-8 rounded-2xl">
                 <h1 className="text-3xl font-bold text-center mb-6">Join the Team</h1>
 
-                <form className="flex flex-col gap-4">
+                <form action={formAction} className="flex flex-col gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1">Full Name</label>
                         <input
@@ -43,8 +47,12 @@ export default function SignupPage() {
                         />
                     </div>
 
-                    <button formAction={signup} className="primary-btn w-full mt-2">
-                        Sign Up
+                    {state?.error && (
+                        <p className="text-red-500 text-sm text-center">{state.error}</p>
+                    )}
+
+                    <button disabled={isPending} className="primary-btn w-full mt-2">
+                        {isPending ? 'Signing up...' : 'Sign Up'}
                     </button>
                 </form>
 

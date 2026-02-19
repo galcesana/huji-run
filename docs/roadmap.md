@@ -3,15 +3,15 @@
 This document outlines the phased implementation plan for the HUJI Run PWA.
 Based on the "Definition of Useful": *Coach can approve members, members connect Strava, Coach sees training consistency, Team uses meetups.*
 
-## Phase 1: Foundations (Weeks 1-2)
+## Phase 1: Foundations & Auth (Milestone 1) ✅
 **Goal:** A working PWA where users can sign up, request to join the team, and coaches can approve them.
-- [ ] **Project Setup:** Next.js repo, Database (Supabase) connection, Basic UI Layout.
-- [ ] **Authentication:** Login with Email/Password (and Google) via Supabase Auth.
-- [ ] **User Roles:** Implement `Coach`, `Member`, `Pending` roles.
-- [ ] **Onboarding Flow:** 
+- [x] **Project Setup:** Next.js repo, Database (Supabase) connection, Basic UI Layout.
+- [x] **Authentication:** Login with Email/Password (and Google) via Supabase Auth.
+- [x] **User Roles:** Implement `Coach`, `Member`, `Pending` roles.
+- [x] **Onboarding Flow:** 
     - User sign up -> "Pending" state.
     - User enters "Team Code".
-- [ ] **Coach Admin:** Dashboard to view and Approve/Reject join requests.
+- [x] **Coach Admin:** Dashboard to view and Approve/Reject join requests.
 
 ## Phase 2: Strava Integration (Week 3)
 **Goal:** Data flowing from Strava to the Database.

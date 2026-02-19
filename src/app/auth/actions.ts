@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
 
-export async function login(formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
     const supabase = await createClient()
 
     const data = {
@@ -24,7 +24,7 @@ export async function login(formData: FormData) {
     redirect('/feed')
 }
 
-export async function signup(formData: FormData) {
+export async function signup(prevState: any, formData: FormData) {
     const supabase = await createClient()
 
     const data = {
@@ -47,7 +47,7 @@ export async function signup(formData: FormData) {
     redirect('/feed') // Or /verify-email if you enable email verification
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(prevState: any, formData: FormData) {
     const supabase = await createClient()
     const headersList = await (await import('next/headers')).headers()
     const origin = headersList.get('origin')

@@ -18,10 +18,12 @@
 ## 🛠 Core Technologies
 
 ### Frontend
--   **Framework**: Next.js 14 (App Router)
+-   **Framework**: Next.js 16 (App Router)
 -   **Language**: TypeScript
--   **Styling**: CSS Modules (Vanilla CSS) + Variables
+-   **Styling**: Tailwind CSS v4 (configured with PostCSS)
+-   **Icons**: Lucide React
 -   **Animations**: Framer Motion (for "Premium" feel)
+-   **PWA**: Manifest & Service Workers enabled
 
 ### Backend
 -   **Runtime**: Next.js API Routes (Node.js/Edge)
