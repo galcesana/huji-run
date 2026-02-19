@@ -44,7 +44,7 @@ export async function signup(prevState: any, formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
-    redirect('/dashboard') // Or /verify-email if you enable email verification
+    redirect('/verify-email')
 }
 
 export async function signInWithGoogle(prevState: any, formData: FormData) {

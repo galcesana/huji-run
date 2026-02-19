@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HUJI Run 🏃🏁
 
-## Getting Started
+Official team application for the **HUJI Run** club. A premium, high-performance web app designed to connect runners, track progress via Strava, and foster team spirit.
 
-First, run the development server:
+## 🌟 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🎨 Premium UI/UX
+- **Glass Pill Navigation:** A sleek, fixed global navigation bar with backdrop-blur effects.
+- **Athletic Branding:** Unified brand identity featuring high-contrast typography and custom logo lockups.
+- **Soft-Premium Aesthetic:** Minimalist design with deep shadows, large border radii (`32px`), and a clean off-white palette.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 👥 Social & Team Dynamics
+- **Team Feed:** Real-time social feed of team activities with kudos and comments.
+- **Automated Onboarding:** Intelligent team assignment for new runners.
+- **Verified Access:** Secure invitation-based signup with dedicated email verification flows.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### ⚡ Performance-First Architecture
+- **SVG Driven:** All branding assets migrated from heavy PNGs to lightweight SVGs, reducing load times by over 98%.
+- **Optimized Data Layer:** Direct Supabase integration with granular SELECT queries for minimal JSON payloads.
+- **Modern Stack:** Built on **Next.js 15 (App Router)**, **Supabase**, and **Tailwind CSS**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
+- Node.js 18+
+- Supabase Project
+- Strava API Application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/galcesana/huji-run.git
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Set up Environment Variables:**
+   Create a `.env.local` file with your credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_key
+   STRAVA_CLIENT_ID=your_id
+   STRAVA_CLIENT_SECRET=your_secret
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 🛠️ Project Structure
+
+- `/src/app`: Next.js App Router (Pages, Layouts, Actions)
+- `/src/components`: Reusable UI components (Design System)
+- `/src/lib`: Database clients and utility functions
+- `/public`: Optimized SVG assets and manifest
+
+---
+
+## 📈 Recent Milestones
+- [x] Swapped 6.5MB logo for 67KB SVG.
+- [x] Implemented "Glass Pill" global navigation.
+- [x] Redesigned Auth Flow (Login, Signup, Verify Email).
+- [x] Optimized feed performance with partial field selection.
