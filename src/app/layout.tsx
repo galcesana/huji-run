@@ -10,9 +10,15 @@ export const metadata: Metadata = {
   title: "HUJI Run",
   description: "Official team app for HUJI Run club",
   manifest: "/manifest.json",
+  themeColor: "#fc4c02",
+  appleWebApp: {
+    title: "HUJI Run",
+    statusBarStyle: "default",
+    capable: true,
+  },
   icons: {
     icon: "/logo.svg",
-    apple: "/logo.svg"
+    apple: "/logo-removebg.png"
   }
 };
 
