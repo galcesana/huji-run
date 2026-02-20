@@ -3,51 +3,30 @@
 This document outlines the phased implementation plan for the HUJI Run PWA.
 Based on the "Definition of Useful": *Coach can approve members, members connect Strava, Coach sees training consistency, Team uses meetups.*
 
-## Phase 1: Foundations & Auth (Milestone 1) ✅
-**Goal:** A working PWA where users can sign up, request to join the team, and coaches can approve them.
-- [x] **Project Setup:** Next.js repo, Database (Supabase) connection, Basic UI Layout.
-- [x] **Authentication:** Login with Email/Password (and Google) via Supabase Auth.
-- [x] **User Roles:** Implement `Coach`, `Member`, `Pending` roles.
-- [x] **Onboarding Flow:** 
-    - User sign up -> "Pending" state.
-    - User enters "Team Code".
-- [x] **Coach Admin:** Dashboard to view and Approve/Reject join requests.
+## Phase 1: Foundations & Auth ✅
+**Goal:** A working platform where users can safely join and coaches can manage the squad.
+- [x] **Project Setup:** Next.js 15, Supabase, Tailwind v4.
+- [x] **Authentication:** Secure Email/Password & Google OAuth.
+- [x] **Verified Onboarding:** 
+    - Auto-Redirection logic (Onboarding -> Pending -> Dashboard).
+    - Team Code validation (Current: `HUJI2026`).
+- [x] **Coach Panel:** Real-time athlete review (Approve/Reject).
 
-## Phase 2: Strava Integration (Week 3)
-**Goal:** Data flowing from Strava to the Database.
-- [ ] **OAuth Connect:** "Connect with Strava" button and flow.
-- [ ] **Token Management:** Securely store and refresh Strava tokens.
-- [ ] **Activity Import:**
-    - Import last 30 days of activities upon connection.
-    - **Webhooks:** Listen for real-time activity updates from Strava.
-- [ ] **Data Normalization:** Store activities in a standardized format in the DB.
+## Phase 2: System Robustness & Deletion ✅
+**Goal:** High-end security and data integrity.
+- [x] **Cascading Deletion:** Secure account removal (User & Admin led).
+- [x] **Clean Rejection:** Automatic user purging on request rejection.
+- [x] **RLS Hardening:** Admin-client overrides for critical onboarding paths.
 
-## Phase 3: Social Feed (Week 4)
-**Goal:** The "Team" feeling. Users see what others are doing.
-- [ ] **Feed Generation:** Automatically create Feed Posts from normalized Activities.
-- [ ] **Feed UI:** Cards showing runner, distance, pace, time.
-- [ ] **Interactions:** Kudos (Likes) and Comments on posts.
-- [ ] **Privacy:** "Team Only" visibility enforcement.
+## Phase 3: Strava & Social Feed 🚧
+**Goal:** Activity data and team spirit.
+- [x] **Strava Webhooks:** Live activity listener implemented.
+- [x] **Data Normalization:** Runs stored in `activities` table.
+- [ ] **Feed Socials:** Kudos and Comments interactions.
+- [ ] **Activity Maps:** Dynamic polyline rendering on feed cards.
 
-## Phase 4: Coach Insights & Stats (Week 5)
-**Goal:** Value for the Coach.
-- [ ] **Member Stats:** Weekly distance, 4-week trend.
-- [ ] **Coach Dashboard:**
-    - Team weekly volume.
-    - "Who ran this week?" list.
-    - Consistency leaderboard.
-
-## Phase 5: Meetups (Week 6)
-**Goal:** Offline coordination.
-- [ ] **Create Meetup:** Coach can post a run (Time, Location, Route).
-- [ ] **RSVP:** Members can say Going / Maybe / No.
-- [ ] **Meetup Details:** Map link, notes.
-- [ ] **Reminders:** Push notifications (if PWA installed) or email.
-
-## Future / V2
-- Map and Location privacy controls.
-- Push Notifications implementation details.
-
-***
-**Update (Webhooks):**
-Strava Webhooks are now the primary sync method for V1. This simplifies the backend using Supabase Edge Functions / Next.js API routes to receive events in real-time.
+## Phase 4: Coach Insights & Meetups 📅
+**Goal:** High-value coordination.
+- [ ] **Consistency Stats:** Weekly volume & leaderboards.
+- [ ] **Event System:** Create meetups with RSVP and route links.
+- [ ] **Team Milestones:** Automatic "Member Joined" and "PB" cards.

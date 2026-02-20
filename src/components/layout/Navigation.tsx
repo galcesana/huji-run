@@ -11,8 +11,8 @@ export function Navigation({ role }: { role?: string | null }) {
     const [isOpen, setIsOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
-    // Hide navigation on auth pages and landing page
-    const hideNav = pathname === '/login' || pathname === '/signup' || pathname === '/' || pathname === '/verify-email'
+    // Hide navigation on auth pages, landing page, and onboarding flow
+    const hideNav = pathname === '/login' || pathname === '/signup' || pathname === '/' || pathname === '/verify-email' || pathname === '/onboarding' || pathname === '/pending'
 
     // Close menu when route changes
     useEffect(() => {
@@ -70,8 +70,8 @@ export function Navigation({ role }: { role?: string | null }) {
                         <Link
                             href="/dashboard/settings"
                             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-75 active:scale-[0.92] border select-none touch-manipulation ${pathname === '/dashboard/settings'
-                                    ? 'bg-[#0f172a] border-[#0f172a] text-white active:bg-black'
-                                    : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-[#0f172a] active:bg-slate-100'
+                                ? 'bg-[#0f172a] border-[#0f172a] text-white active:bg-black'
+                                : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-[#0f172a] active:bg-slate-100'
                                 }`}
                             aria-label="Settings"
                         >
@@ -81,8 +81,8 @@ export function Navigation({ role }: { role?: string | null }) {
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-75 active:scale-[0.92] border sm:hidden select-none touch-manipulation ${isOpen
-                                    ? 'bg-[#fc4c02] border-[#fc4c02] text-white active:bg-[#e64502]'
-                                    : 'bg-white border-slate-200 text-slate-600 active:bg-slate-100'
+                                ? 'bg-[#fc4c02] border-[#fc4c02] text-white active:bg-[#e64502]'
+                                : 'bg-white border-slate-200 text-slate-600 active:bg-slate-100'
                                 }`}
                         >
                             {isOpen ? <X size={20} strokeWidth={2.5} /> : <MenuIcon size={20} strokeWidth={2.5} />}
@@ -97,8 +97,8 @@ export function Navigation({ role }: { role?: string | null }) {
                                         key={link.href}
                                         href={link.href}
                                         className={`px-4 py-2 text-[13px] font-[700] rounded-lg transition-all duration-75 active:scale-95 ${isActive
-                                                ? 'bg-white text-[#fc4c02] shadow-sm active:bg-slate-50'
-                                                : 'text-slate-500 hover:text-[#0f172a] hover:bg-white/50 active:bg-white/80'
+                                            ? 'bg-white text-[#fc4c02] shadow-sm active:bg-slate-50'
+                                            : 'text-slate-500 hover:text-[#0f172a] hover:bg-white/50 active:bg-white/80'
                                             }`}
                                     >
                                         {link.name}
@@ -122,8 +122,8 @@ export function Navigation({ role }: { role?: string | null }) {
                                             key={link.href}
                                             href={link.href}
                                             className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-75 active:scale-[0.96] select-none touch-manipulation ${isActive
-                                                    ? 'bg-[#fff3eb] text-[#fc4c02] active:bg-[#ffe6d4]'
-                                                    : 'text-slate-600 hover:bg-slate-50 active:bg-slate-100'
+                                                ? 'bg-[#fff3eb] text-[#fc4c02] active:bg-[#ffe6d4]'
+                                                : 'text-slate-600 hover:bg-slate-50 active:bg-slate-100'
                                                 }`}
                                         >
                                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform active:scale-90 ${isActive ? 'bg-white shadow-sm' : 'bg-slate-100'

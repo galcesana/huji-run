@@ -1,11 +1,12 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
-import { approveRequest, rejectRequest } from './actions'
+import { approveRequest, rejectRequest, removeAthlete } from './actions'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { ShieldCheck, UserCheck, UserX, Mail, ArrowLeft, Clock } from 'lucide-react'
+import { ShieldCheck, UserCheck, UserX, Mail, ArrowLeft, Clock, Users, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { RemoveAthleteButton } from '@/components/admin/RemoveAthleteButton'
 
 export default async function AdminPage() {
     // 1. Verify Coach Access using memoized profile
@@ -32,15 +33,17 @@ export default async function AdminPage() {
         )
     }
 
+    const adminClient = await createAdminClient()
     const supabase = await createClient()
 
-    // 2. Fetch Pending Requests
-    const { data: requests } = await supabase
+    // 2. Fetch Pending Requests (Using Admin client to see all for team)
+    const { data: requests } = await adminClient
         .from('join_requests')
         .select(`
             id,
             created_at,
             note,
+            team_id,
             user:profiles (
                 id,
                 full_name,
@@ -49,25 +52,41 @@ export default async function AdminPage() {
             )
         `)
         .eq('status', 'PENDING')
+        .eq('team_id', profile.team_id)
         .order('created_at', { ascending: false })
+
+    // 3. Fetch Active Athletes in the same team
+    const { data: athletes } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, avatar_url, role')
+        .eq('team_id', profile.team_id)
+        .eq('status', 'ACTIVE')
+        .order('full_name', { ascending: true })
 
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-12 pt-4 md:px-10 md:pb-20 md:pt-8 font-sans">
-            <div className="max-w-2xl mx-auto space-y-10">
+            <div className="max-w-2xl mx-auto space-y-16">
                 <header className="flex flex-col items-center text-center gap-4 pt-4">
                     <div className="space-y-2">
                         <h1 className="text-[44px] sm:text-[52px] font-[900] text-[#0f172a] tracking-tight leading-none">
                             Coach Panel<span className="text-[#fc4c02]">.</span>
                         </h1>
-                        <p className="text-[18px] text-[#64748b] font-medium">Manage team join requests</p>
-                    </div>
-
-                    <div className="bg-[#eff6ff] text-[#2563eb] px-5 py-1.5 rounded-full text-[13px] font-bold uppercase tracking-wider border border-blue-100/50 shadow-sm mt-2">
-                        {requests?.length || 0} Pending {requests?.length === 1 ? 'Request' : 'Requests'}
+                        <p className="text-[18px] text-[#64748b] font-medium">Team management & athlete review</p>
                     </div>
                 </header>
 
-                <section className="space-y-6">
+                {/* Section 1: Join Requests */}
+                <section className="space-y-8">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="bg-blue-50 text-blue-600 p-2.5 rounded-xl">
+                            <UserCheck size={20} strokeWidth={2.5} />
+                        </div>
+                        <h2 className="text-[22px] font-[800] text-[#0f172a] tracking-tight">Pending Requests</h2>
+                        <div className="ml-auto bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[12px] font-black uppercase tracking-wider">
+                            {requests?.length || 0}
+                        </div>
+                    </div>
+
                     {!requests || requests.length === 0 ? (
                         <Card className="p-12 bg-white border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] rounded-[28px] flex flex-col items-center text-center gap-4">
                             <div className="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-2">
@@ -118,7 +137,7 @@ export default async function AdminPage() {
                                         )}
 
                                         <div className="grid grid-cols-2 gap-3 pt-2">
-                                            <form action={rejectRequest.bind(null, req.id)} className="w-full">
+                                            <form action={rejectRequest.bind(null, req.id, req.user.id)} className="w-full">
                                                 <Button className="w-full bg-white border border-slate-200 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 py-6 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.96]">
                                                     <UserX size={18} strokeWidth={2.5} />
                                                     Reject
@@ -136,6 +155,55 @@ export default async function AdminPage() {
                             ))}
                         </div>
                     )}
+                </section>
+
+                <div className="border-t border-slate-200/60 my-4 px-20"></div>
+
+                {/* Section 2: Manage Team */}
+                <section className="space-y-8">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="bg-orange-50 text-[#fc4c02] p-2.5 rounded-xl">
+                            <Users size={20} strokeWidth={2.5} />
+                        </div>
+                        <h2 className="text-[22px] font-[800] text-[#0f172a] tracking-tight">Team Athletes</h2>
+                        <div className="ml-auto bg-orange-100 text-[#fc4c02] px-3 py-1 rounded-full text-[12px] font-black uppercase tracking-wider">
+                            {athletes?.length || 0}
+                        </div>
+                    </div>
+
+                    <div className="grid gap-3">
+                        {athletes?.map((athlete) => (
+                            <Card key={athlete.id} className="p-4 bg-white border border-slate-100 hover:border-slate-200 shadow-sm rounded-3xl transition-all group">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+                                            {athlete.avatar_url ? (
+                                                <img src={athlete.avatar_url} alt={athlete.full_name} className="w-full h-full object-cover" />
+                                            ) : (
+                                                <span className="text-sm font-bold text-slate-400 capitalize">{athlete.full_name?.[0]}</span>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-[700] text-[#0f172a] text-[15px] leading-tight">
+                                                {athlete.full_name}
+                                                {athlete.role === 'CO_COACH' && <span className="ml-2 bg-blue-50 text-blue-600 text-[10px] px-2 py-0.5 rounded-md">CO_COACH</span>}
+                                                {athlete.role === 'COACH' && <span className="ml-2 bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-md">COACH</span>}
+                                            </h4>
+                                            <p className="text-[12px] text-slate-500 font-medium truncate max-w-[140px] sm:max-w-none">{athlete.email}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Prevent self-deletion as primary coach */}
+                                    {athlete.id !== profile.id && athlete.role === 'USER' && (
+                                        <RemoveAthleteButton
+                                            athleteId={athlete.id}
+                                            athleteName={athlete.full_name}
+                                        />
+                                    )}
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
                 </section>
             </div>
         </main>

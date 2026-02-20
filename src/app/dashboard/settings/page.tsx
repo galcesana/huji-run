@@ -6,6 +6,7 @@ import { Activity, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { revalidatePath } from 'next/cache'
 import NextImage from 'next/image'
+import { DeleteAccountButton } from '@/components/settings/DeleteAccountButton'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -85,6 +86,16 @@ export default async function SettingsPage() {
                                 Log out
                             </Button>
                         </form>
+                    </Card>
+
+                    <Card className="p-7 bg-white border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] rounded-[24px]">
+                        <h2 className="text-[20px] font-[700] text-[#0f172a] tracking-tight mb-6 text-red-600">Danger Zone</h2>
+                        <div className="space-y-4">
+                            <p className="text-[14px] text-slate-500 mb-4 font-medium">
+                                Once you delete your account, there is no going back. Please be certain.
+                            </p>
+                            <DeleteAccountButton />
+                        </div>
                     </Card>
                 </div>
             </div>

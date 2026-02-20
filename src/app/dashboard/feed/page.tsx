@@ -8,27 +8,16 @@ import NextImage from 'next/image'
 
 export default async function FeedPage() {
     const user = await getUser()
+    if (!user) redirect('/login')
 
-    if (!user) {
-        redirect('/login')
-    }
-
-    // 1. Get the current user's profile/team_id (Memoized)
     const profile = await getProfile()
 
+    // 1. Join Flow Redirections
     if (!profile?.team_id) {
-        return (
-            <main className="min-h-screen bg-[#f8fafc] font-sans">
-                <div className="max-w-xl mx-auto p-4 md:p-8 space-y-8">
-                    <header className="flex flex-col items-center text-center gap-4 mb-4 pt-4">
-                    </header>
-                    <div className="text-center p-12 bg-white rounded-[24px] border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] flex flex-col items-center gap-4">
-                        <h3 className="text-[20px] font-[700] text-[#0f172a] tracking-tight">You are not part of a team yet.</h3>
-                        <p className="text-[#64748b] leading-[1.6]">An admin needs to approve your team request before you can see this feed.</p>
-                    </div>
-                </div>
-            </main>
-        )
+        redirect('/onboarding')
+    }
+    if (profile?.status === 'PENDING') {
+        redirect('/pending')
     }
 
     const supabase = await createClient()

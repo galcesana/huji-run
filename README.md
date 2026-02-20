@@ -1,73 +1,70 @@
 # HUJI Run 🏃🏁
 
-Official team application for the **HUJI Run** club. A premium, high-performance web app designed to connect runners, track progress via Strava, and foster team spirit.
+Official team application for the **HUJI Run** club. A premium, high-performance web app designed to connect runners, track progress via Strava, and foster team spirit within the Hebrew University community.
+
+---
 
 ## 🌟 Key Features
 
 ### 🎨 Premium UI/UX
-- **Glass Pill Navigation:** A sleek, fixed global navigation bar with backdrop-blur effects.
-- **Athletic Branding:** Unified brand identity featuring high-contrast typography and custom logo lockups.
-- **Soft-Premium Aesthetic:** Minimalist design with deep shadows, large border radii (`32px`), and a clean off-white palette.
+- **"Glass Pill" Interface:** Clean, modern design featuring backdrop-blur effects, high-contrast typography, and a "Soft-Premium" aesthetic.
+- **Micro-Interactions:** Smooth transitions and tactile button responses (scale-down effects).
+- **SVG Branding:** Ultra-lightweight assets for lightning-fast loads.
 
-### 👥 Social & Team Dynamics
-- **Team Feed:** Real-time social feed of team activities with kudos and comments.
-- **Automated Onboarding:** Intelligent team assignment for new runners.
-- **Verified Access:** Secure invitation-based signup with dedicated email verification flows.
+### 👥 Squad Dynamics
+- **Team Feed:** Real-time social feed of activities with deep Strava integration.
+- **Intelligent Onboarding:** Seamless flow from unauthenticated -> onboarding -> pending review -> dashboard.
+- **verified Access:** Invitation-only signup using the `HUJI2026` join code.
 
-### ⚡ Performance-First Architecture
-- **SVG Driven:** All branding assets migrated from heavy PNGs to lightweight SVGs, reducing load times by over 98%.
-- **Optimized Data Layer:** Direct Supabase integration with granular SELECT queries for minimal JSON payloads.
-- **Modern Stack:** Built on **Next.js 15 (App Router)**, **Supabase**, and **Tailwind CSS**.
+### 🛡️ Secure & Robust
+- **Role-Based Access:** Dedicated views for Coaches and Athletes.
+- **Cascading Deletions:** Complete account purging for security and privacy (user-led or coach-led).
+- **Admin-Client Overrides:** Robust server actions ensure security rules never block legitimate user setup.
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ The Stack
 
-### Prerequisites
-- Node.js 18+
-- Supabase Project
-- Strava API Application
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router + React 19)
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL + Realtime)
+- **Auth**: Supabase SSR (Email/Google)
+- **Styling**: Tailwind CSS v4
+- **API**: Strava V3 (Webhooks + OAuth)
 
-### Installation
+---
 
-1. **Clone the repository:**
+## 📖 Documentation
+
+The project documentation has been consolidated for clarity:
+
+- [**System Design**](./docs/SYSTEM_DESIGN.md) — Architecture, Data Model, and Permission logic.
+- [**Development Roadmap**](./docs/roadmap.md) — Phased progress and future milestones.
+- [**Setup Checklist**](./docs/setup-checklist.md) — 5-minute guide to local development.
+- [**Deployment Guide**](./docs/vercel-deployment.md) — Vercel & Supabase production setup.
+
+---
+
+## 🚀 Quick Start
+
+1. **Clone & Install**:
    ```bash
    git clone https://github.com/galcesana/huji-run.git
-   ```
-
-2. **Install dependencies:**
-   ```bash
+   cd huji-run
    npm install
    ```
 
-3. **Set up Environment Variables:**
-   Create a `.env.local` file with your credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
-   SUPABASE_SERVICE_ROLE_KEY=your_service_key
-   STRAVA_CLIENT_ID=your_id
-   STRAVA_CLIENT_SECRET=your_secret
-   ```
+2. **Configure**:
+   Follow the [Setup Checklist](./docs/setup-checklist.md) to add your `.env.local` keys.
 
-4. **Run the development server:**
+3. **Run**:
    ```bash
    npm run dev
    ```
 
 ---
 
-## 🛠️ Project Structure
-
-- `/src/app`: Next.js App Router (Pages, Layouts, Actions)
-- `/src/components`: Reusable UI components (Design System)
-- `/src/lib`: Database clients and utility functions
-- `/public`: Optimized SVG assets and manifest
-
----
-
-## 📈 Recent Milestones
-- [x] Swapped 6.5MB logo for 67KB SVG.
-- [x] Implemented "Glass Pill" global navigation.
-- [x] Redesigned Auth Flow (Login, Signup, Verify Email).
-- [x] Optimized feed performance with partial field selection.
+## 📈 Recent Wins
+- [x] **Consolidated Documentation**: Merged legacy docs into a clean, maintainable system.
+- [x] **Secure Deletion Flow**: Implemented cascading removal of all user data.
+- [x] **Premium Onboarding**: Redesigned onboarding and pending pages with glassmorphism.
+- [x] **Verified Coach Panel**: Upgraded coach visibility and approval actions.

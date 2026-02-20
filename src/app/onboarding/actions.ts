@@ -3,11 +3,12 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 
 export async function joinTeam(prevState: any, formData: FormData) {
     const supabase = await createClient()
-    const code = formData.get('code') as string
+    const adminClient = await createAdminClient()
+    const code = (formData.get('code') as string)?.trim().toUpperCase()
     const note = formData.get('note') as string
 
     // 1. Validate User
@@ -25,28 +26,43 @@ export async function joinTeam(prevState: any, formData: FormData) {
         return { error: 'Invalid Team Code' }
     }
 
-    // 3. Create Join Request
-    const { error: requestError } = await supabase
+    // 3. Check for existing request or Create New (Admin Client for reliability)
+    const { data: existingRequest } = await adminClient
         .from('join_requests')
-        .insert({
-            user_id: user.id,
-            team_id: team.id,
-            status: 'PENDING',
-            note: note
-        })
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('team_id', team.id)
+        .single()
 
-    if (requestError) {
-        return { error: 'Request failed. You might have already applied.' }
+    if (!existingRequest) {
+        const { error: requestError } = await adminClient
+            .from('join_requests')
+            .insert({
+                user_id: user.id,
+                team_id: team.id,
+                status: 'PENDING',
+                note: note
+            })
+
+        if (requestError) {
+            console.error('Join request error:', requestError)
+            return { error: 'Failed to send request. Please try again.' }
+        }
     }
 
-    // 4. Update Profile Status
-    await supabase
+    // 4. Update Profile Status (Admin Client to bypass RLS)
+    const { error: profileError } = await adminClient
         .from('profiles')
         .update({
             team_id: team.id,
             status: 'PENDING'
         })
         .eq('id', user.id)
+
+    if (profileError) {
+        console.error('Profile update error:', profileError)
+        return { error: 'Failed to update profile. Please try again.' }
+    }
 
     revalidatePath('/', 'layout')
     redirect('/pending')

@@ -4,14 +4,21 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Activity, CheckCircle, AlertCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import { getUser } from '@/lib/supabase/data'
+import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
     const user = await getUser()
+    if (!user) redirect('/login')
 
-    if (!user) {
-        redirect('/login')
+    const profile = await getProfile()
+
+    // 1. Join Flow Redirections
+    if (!profile?.team_id) {
+        redirect('/onboarding')
+    }
+    if (profile?.status === 'PENDING') {
+        redirect('/pending')
     }
 
     const supabase = await createClient()
