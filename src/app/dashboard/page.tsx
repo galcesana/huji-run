@@ -1,4 +1,5 @@
 
+import Link from 'next/link'
 import NextImage from 'next/image'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -85,11 +86,11 @@ export default async function DashboardPage() {
                                 </p>
 
                                 <div className="pt-1 w-full max-w-[280px] flex justify-center">
-                                    <a href="/dashboard/feed" className="block relative z-10 w-full">
+                                    <Link href="/dashboard/feed" className="block relative z-10 w-full">
                                         <Button className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-10 py-6 rounded-[100px] text-[16px] font-[600] items-center flex justify-center w-full">
                                             View Team Feed
                                         </Button>
-                                    </a>
+                                    </Link>
                                 </div>
                             </Card>
 
@@ -107,11 +108,11 @@ export default async function DashboardPage() {
                                 </p>
 
                                 <div className="w-full max-w-[280px] flex justify-center">
-                                    <a href="/dashboard/team" className="block relative z-10 w-full">
+                                    <Link href="/dashboard/team" className="block relative z-10 w-full">
                                         <Button variant="outline" className="text-slate-700 hover:text-slate-900 border-slate-200 hover:bg-slate-50 px-8 py-5 rounded-[100px] text-[15px] font-[600] w-full items-center flex justify-center">
                                             View Members
                                         </Button>
-                                    </a>
+                                    </Link>
                                 </div>
                             </Card>
                         </>
@@ -132,11 +133,11 @@ export default async function DashboardPage() {
                                 </p>
 
                                 <div className="w-full max-w-[320px] flex justify-center pb-2">
-                                    <a href="/dashboard/feed" className="block relative z-10 w-full">
+                                    <Link href="/dashboard/feed" className="block relative z-10 w-full">
                                         <Button className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-10 py-6 rounded-[100px] text-[17px] font-[700] items-center flex justify-center w-full shadow-lg shadow-blue-500/30 transition-transform active:scale-95">
                                             Open Team Feed
                                         </Button>
-                                    </a>
+                                    </Link>
                                 </div>
                             </Card>
 
@@ -154,11 +155,11 @@ export default async function DashboardPage() {
                                 </p>
 
                                 <div className="w-full max-w-[280px] flex justify-center">
-                                    <a href="/dashboard/team" className="block relative z-10 w-full">
+                                    <Link href="/dashboard/team" className="block relative z-10 w-full">
                                         <Button variant="outline" className="text-slate-700 hover:text-slate-900 border-slate-200 hover:bg-slate-50 px-8 py-5 rounded-[100px] text-[15px] font-[600] w-full items-center flex justify-center">
                                             View Members
                                         </Button>
-                                    </a>
+                                    </Link>
                                 </div>
                             </Card>
 
@@ -176,11 +177,11 @@ export default async function DashboardPage() {
                                         <p className="text-[13px] font-medium text-slate-500 leading-none">Last synced: {new Date(stravaAccount.updated_at).toLocaleDateString()}</p>
                                     </div>
                                 </div>
-                                <a href="/dashboard/settings" className="flex">
+                                <Link href="/dashboard/settings" className="flex">
                                     <Button variant="ghost" className="text-slate-500 hover:text-[#0f172a] hover:bg-slate-100 h-9 text-[13px] font-[600] rounded-[10px] px-4 w-full">
                                         Manage
                                     </Button>
-                                </a>
+                                </Link>
                             </div>
                         </>
                     )}
