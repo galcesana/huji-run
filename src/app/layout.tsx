@@ -29,21 +29,21 @@ export const metadata: Metadata = {
   }
 };
 
-import { Navigation } from "@/components/layout/Navigation";
-import { getProfile } from "@/lib/supabase/data";
+import { Suspense } from "react";
+import { ServerNavigation } from "@/components/layout/ServerNavigation";
+import { NavigationSkeleton } from "@/components/layout/NavigationSkeleton";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const profile = await getProfile();
-  const role = profile?.role || null;
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        <Navigation role={role} />
+        <Suspense fallback={<NavigationSkeleton />}>
+          <ServerNavigation />
+        </Suspense>
         {children}
       </body>
     </html>
