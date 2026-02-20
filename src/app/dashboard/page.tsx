@@ -2,7 +2,7 @@
 import NextImage from 'next/image'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Activity, CheckCircle, AlertCircle } from 'lucide-react'
+import { Activity, CheckCircle, AlertCircle, Users } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
@@ -92,6 +92,28 @@ export default async function DashboardPage() {
                                     </a>
                                 </div>
                             </Card>
+
+                            {/* Team Roster Link Card (Secondary when disconnected) */}
+                            <Card className="p-7 bg-white border border-slate-200/60 shadow-sm rounded-[24px] flex flex-col items-center text-center opacity-70 grayscale-[20%] transition-opacity hover:opacity-100 hover:grayscale-0 mt-2">
+                                <div className="flex flex-col items-center gap-2 mb-4">
+                                    <div className="bg-slate-100 w-12 h-12 flex items-center justify-center rounded-[14px] text-slate-700">
+                                        <Users size={24} strokeWidth={2.5} />
+                                    </div>
+                                    <h2 className="text-[20px] font-[700] text-[#0f172a] tracking-tight">Team Roster</h2>
+                                </div>
+
+                                <p className="text-[#475569] leading-[1.6] text-[15px] mb-5 max-w-sm">
+                                    See who is on your team, find running buddies, and connect with your coaches.
+                                </p>
+
+                                <div className="w-full max-w-[280px] flex justify-center">
+                                    <a href="/dashboard/team" className="block relative z-10 w-full">
+                                        <Button variant="outline" className="text-slate-700 hover:text-slate-900 border-slate-200 hover:bg-slate-50 px-8 py-5 rounded-[100px] text-[15px] font-[600] w-full items-center flex justify-center">
+                                            View Members
+                                        </Button>
+                                    </a>
+                                </div>
+                            </Card>
                         </>
                     ) : (
                         <>
@@ -113,6 +135,28 @@ export default async function DashboardPage() {
                                     <a href="/dashboard/feed" className="block relative z-10 w-full">
                                         <Button className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white px-10 py-6 rounded-[100px] text-[17px] font-[700] items-center flex justify-center w-full shadow-lg shadow-blue-500/30 transition-transform active:scale-95">
                                             Open Team Feed
+                                        </Button>
+                                    </a>
+                                </div>
+                            </Card>
+
+                            {/* Secondary Action: Team Roster Link Card */}
+                            <Card className="p-7 bg-white border border-slate-200/60 shadow-sm rounded-[24px] flex flex-col items-center text-center transition-all hover:shadow-md hover:border-slate-300">
+                                <div className="flex flex-col items-center gap-2 mb-4">
+                                    <div className="bg-slate-100 w-12 h-12 flex items-center justify-center rounded-[14px] text-slate-700">
+                                        <Users size={24} strokeWidth={2.5} />
+                                    </div>
+                                    <h2 className="text-[20px] font-[700] text-[#0f172a] tracking-tight">Team Roster</h2>
+                                </div>
+
+                                <p className="text-[#475569] leading-[1.6] text-[15px] mb-5 max-w-sm">
+                                    See who is on your team, find running buddies, and connect with your coaches.
+                                </p>
+
+                                <div className="w-full max-w-[280px] flex justify-center">
+                                    <a href="/dashboard/team" className="block relative z-10 w-full">
+                                        <Button variant="outline" className="text-slate-700 hover:text-slate-900 border-slate-200 hover:bg-slate-50 px-8 py-5 rounded-[100px] text-[15px] font-[600] w-full items-center flex justify-center">
+                                            View Members
                                         </Button>
                                     </a>
                                 </div>

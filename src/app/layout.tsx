@@ -1,16 +1,23 @@
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const viewport: Viewport = {
+  themeColor: "#fc4c02",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: "HUJI Run",
   description: "Official team app for HUJI Run club",
   manifest: "/manifest.json",
-  themeColor: "#fc4c02",
   appleWebApp: {
     title: "HUJI Run",
     statusBarStyle: "default",
