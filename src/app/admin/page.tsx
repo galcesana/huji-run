@@ -138,7 +138,7 @@ export default async function AdminPage() {
 
                                         <div className="grid grid-cols-2 gap-3 pt-2">
                                             <form action={rejectRequest.bind(null, req.id, req.user.id)} className="w-full">
-                                                <Button className="w-full bg-white border border-slate-200 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 py-6 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.96]">
+                                                <Button variant="ghost" className="w-full bg-white border border-slate-200 !text-slate-600 hover:!bg-red-50 hover:!text-red-600 hover:!border-red-200 py-6 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.96]">
                                                     <UserX size={18} strokeWidth={2.5} />
                                                     Reject
                                                 </Button>
@@ -193,8 +193,8 @@ export default async function AdminPage() {
                                         </div>
                                     </div>
 
-                                    {/* Prevent self-deletion as primary coach */}
-                                    {athlete.id !== profile.id && athlete.role === 'USER' && (
+                                    {/* Prevent self-deletion and deleting other coaches */}
+                                    {athlete.id !== profile.id && athlete.role !== 'COACH' && athlete.role !== 'CO_COACH' && (
                                         <RemoveAthleteButton
                                             athleteId={athlete.id}
                                             athleteName={athlete.full_name}

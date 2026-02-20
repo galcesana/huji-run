@@ -47,26 +47,7 @@ export async function signup(prevState: any, formData: FormData) {
     redirect('/verify-email')
 }
 
-export async function signInWithGoogle(prevState: any, formData: FormData) {
-    const supabase = await createClient()
-    const headersList = await (await import('next/headers')).headers()
-    const origin = headersList.get('origin')
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: `${origin}/auth/callback`,
-        },
-    })
-
-    if (error) {
-        return { error: error.message }
-    }
-
-    if (data.url) {
-        redirect(data.url)
-    }
-}
 
 export async function deleteAccount() {
     const supabase = await createClient()

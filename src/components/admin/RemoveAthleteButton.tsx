@@ -30,13 +30,12 @@ export function RemoveAthleteButton({ athleteId, athleteName }: RemoveAthleteBut
     }
 
     return (
-        <Button
-            variant="ghost"
+        <button
             onClick={handleRemove}
             disabled={isPending}
-            className="h-10 w-10 p-0 rounded-xl text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="h-10 w-10 min-w-[40px] p-0 rounded-xl text-red-500 hover:text-red-700 hover:bg-red-100 transition-colors flex-shrink-0 flex items-center justify-center disabled:opacity-50"
         >
             {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 size={18} />}
-        </Button>
+        </button>
     )
 }

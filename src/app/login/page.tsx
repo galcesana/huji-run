@@ -3,13 +3,12 @@
 import React, { useActionState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { login, signInWithGoogle } from '../auth/actions'
+import { login } from '../auth/actions'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 
 export default function LoginPage() {
     const [state, formAction, isPending] = useActionState(login, null)
-    const [googleState, googleAction, isGooglePending] = useActionState(signInWithGoogle, null)
 
     return (
         <main className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-6 font-sans">
@@ -48,7 +47,7 @@ export default function LoginPage() {
                                     type="email"
                                     required
                                     className="w-full bg-[#f8fafc] border-0 rounded-2xl px-5 py-4 text-[15px] font-medium focus:ring-2 focus:ring-[#fc4c02]/20 transition-all outline-none placeholder-slate-400"
-                                    placeholder="runner@mail.huji.ac.il"
+                                    placeholder="maru.teferi@mail.huji.ac.il"
                                 />
                             </div>
 
@@ -78,27 +77,7 @@ export default function LoginPage() {
                             </Button>
                         </form>
 
-                        <div className="relative my-8">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-slate-100"></div>
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white px-4 text-slate-400 font-bold tracking-widest">OR</span>
-                            </div>
-                        </div>
 
-                        <form action={googleAction}>
-                            {googleState?.error && (
-                                <p className="text-red-500 text-sm text-center mb-2">{googleState.error}</p>
-                            )}
-                            <button
-                                disabled={isGooglePending}
-                                className="w-full h-[60px] bg-white border border-slate-200 text-[#0f172a] font-[700] rounded-2xl flex items-center justify-center gap-3 hover:bg-slate-50 transition-all active:scale-[0.98] shadow-sm"
-                            >
-                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-                                {isGooglePending ? 'Connecting...' : 'Sign in with Google'}
-                            </button>
-                        </form>
                     </div>
 
                     {/* Subtle aesthetic accent */}

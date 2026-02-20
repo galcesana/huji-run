@@ -58,7 +58,7 @@ export default function SignupPage() {
                                     type="email"
                                     required
                                     className="w-full bg-[#f8fafc] border-0 rounded-2xl px-5 py-4 text-[15px] font-medium focus:ring-2 focus:ring-[#fc4c02]/20 transition-all outline-none placeholder-slate-400"
-                                    placeholder="runner@mail.huji.ac.il"
+                                    placeholder="maru.teferi@mail.huji.ac.il"
                                 />
                             </div>
 
