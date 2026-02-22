@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { RemoveAthleteButton } from '@/components/admin/RemoveAthleteButton'
 import { BroadcastForm } from '@/components/admin/BroadcastForm'
 import { EventForm } from '@/components/admin/EventForm'
+import { TrainingPlanBuilder } from '@/components/admin/TrainingPlanBuilder'
+import { PlansList } from '@/components/admin/PlansList'
 
 export default async function AdminPage() {
     // 1. Verify Coach Access using memoized profile
@@ -65,6 +67,31 @@ export default async function AdminPage() {
         .eq('status', 'ACTIVE')
         .order('full_name', { ascending: true })
 
+    // 4. Fetch Training Plans with workouts
+    const { data: trainingPlans } = await supabase
+        .from('training_plans')
+        .select(`
+            id,
+            title,
+            week_start_date,
+            status,
+            published_at,
+            created_at,
+            workouts (
+                id,
+                day_of_week,
+                title,
+                description,
+                type,
+                distance_km,
+                duration_min,
+                target_pace
+            )
+        `)
+        .eq('team_id', profile.team_id)
+        .order('week_start_date', { ascending: false })
+        .limit(20)
+
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-12 pt-4 md:px-10 md:pb-20 md:pt-8 font-sans">
             <div className="max-w-2xl mx-auto space-y-16">
@@ -87,6 +114,18 @@ export default async function AdminPage() {
                         <h2 className="text-[20px] font-[800] text-[#0f172a] px-2">Team Calendar</h2>
                         <EventForm />
                     </div>
+                </section>
+
+                {/* Section: Training Plans */}
+                <section className="space-y-6">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="bg-violet-50 text-violet-600 p-2.5 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6.5 6.5 11 11" /><path d="m21 21-1-1" /><path d="m3 3 1 1" /><path d="m18 22 4-4" /><path d="m2 6 4-4" /><path d="m3 10 7-7" /><path d="m14 21 7-7" /></svg>
+                        </div>
+                        <h2 className="text-[22px] font-[800] text-[#0f172a] tracking-tight">Training Plans</h2>
+                    </div>
+                    <TrainingPlanBuilder />
+                    <PlansList plans={trainingPlans || []} />
                 </section>
 
                 {/* Section 1: Join Requests */}

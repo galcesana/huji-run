@@ -28,6 +28,6 @@ export async function submitRsvp(eventId: string, status: 'GOING' | 'NOT_GOING',
         return { error: 'Failed to save RSVP' }
     }
 
-    revalidatePath('/dashboard/calendar')
+    revalidatePath('/dashboard/schedule')
     return { success: true }
 }

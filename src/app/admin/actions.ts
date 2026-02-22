@@ -208,7 +208,152 @@ export async function createEvent(formData: FormData) {
         return { error: 'Failed to schedule event' }
     }
 
-    revalidatePath('/dashboard/calendar') // Assuming we will build this soon
+    revalidatePath('/dashboard/schedule')
     revalidatePath('/admin')
+    return { success: true }
+}
+
+// ── Training Plans ──────────────────────────────────────────────
+
+export async function createTrainingPlan(formData: {
+    title: string;
+    weekStartDate: string; // ISO date string e.g. "2024-03-18"
+    workouts: {
+        dayOfWeek: number; // 0=Sun, 6=Sat
+        title: string;
+        description?: string;
+        type: 'EASY' | 'WORKOUT' | 'LONG_RUN' | 'REST';
+        distanceKm?: number;
+        durationMin?: number;
+        targetPace?: string;
+    }[];
+}) {
+    const supabase = await checkCoach()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'Unauthorized' }
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('team_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.team_id) return { error: 'No team found' }
+
+    if (!formData.title || !formData.weekStartDate) {
+        return { error: 'Title and week start date are required' }
+    }
+
+    // 1. Create the plan (DRAFT by default)
+    const { data: plan, error: planError } = await supabase
+        .from('training_plans')
+        .insert({
+            team_id: profile.team_id,
+            created_by: user.id,
+            title: formData.title,
+            week_start_date: formData.weekStartDate,
+            status: 'DRAFT'
+        })
+        .select('id')
+        .single()
+
+    if (planError) {
+        console.error('Failed to create training plan:', planError)
+        if (planError.code === '23505') {
+            return { error: 'A plan already exists for this week. Choose a different week.' }
+        }
+        return { error: 'Failed to create training plan' }
+    }
+
+    // 2. Bulk insert workouts (skip REST days without titles)
+    const workoutRows = formData.workouts
+        .filter(w => w.title.trim() !== '')
+        .map(w => ({
+            plan_id: plan.id,
+            day_of_week: w.dayOfWeek,
+            title: w.title,
+            description: w.description || null,
+            type: w.type,
+            distance_km: w.distanceKm || null,
+            duration_min: w.durationMin || null,
+            target_pace: w.targetPace || null,
+        }))
+
+    if (workoutRows.length > 0) {
+        const { error: workoutError } = await supabase
+            .from('workouts')
+            .insert(workoutRows)
+
+        if (workoutError) {
+            console.error('Failed to add workouts:', workoutError)
+            // Plan was created but workouts failed — delete the plan to rollback
+            await supabase.from('training_plans').delete().eq('id', plan.id)
+            return { error: 'Failed to save workouts' }
+        }
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/dashboard')
+    revalidatePath('/dashboard/schedule')
+    return { success: true, planId: plan.id }
+}
+
+export async function publishPlan(planId: string) {
+    const supabase = await checkCoach()
+
+    const { error } = await supabase
+        .from('training_plans')
+        .update({
+            status: 'PUBLISHED',
+            published_at: new Date().toISOString()
+        })
+        .eq('id', planId)
+
+    if (error) {
+        console.error('Failed to publish plan:', error)
+        return { error: 'Failed to publish plan' }
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/dashboard')
+    revalidatePath('/dashboard/schedule')
+    return { success: true }
+}
+
+export async function unpublishPlan(planId: string) {
+    const supabase = await checkCoach()
+
+    const { error } = await supabase
+        .from('training_plans')
+        .update({ status: 'DRAFT', published_at: null })
+        .eq('id', planId)
+
+    if (error) {
+        console.error('Failed to unpublish plan:', error)
+        return { error: 'Failed to unpublish plan' }
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/dashboard')
+    revalidatePath('/dashboard/schedule')
+    return { success: true }
+}
+
+export async function deletePlan(planId: string) {
+    const supabase = await checkCoach()
+
+    const { error } = await supabase
+        .from('training_plans')
+        .delete()
+        .eq('id', planId)
+
+    if (error) {
+        console.error('Failed to delete plan:', error)
+        return { error: 'Failed to delete plan' }
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/dashboard')
+    revalidatePath('/dashboard/schedule')
     return { success: true }
 }

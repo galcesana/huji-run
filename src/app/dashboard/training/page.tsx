@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
-export default function CalendarRedirect() {
+export default function TrainingRedirect() {
     redirect('/dashboard/schedule')
 }

@@ -7,6 +7,7 @@ import { Activity, CheckCircle, AlertCircle, Users } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
+import { ThisWeekPlan } from '@/components/dashboard/ThisWeekPlan'
 
 export default async function DashboardPage() {
     const user = await getUser()
@@ -32,6 +33,43 @@ export default async function DashboardPage() {
 
     const isConnected = !!stravaAccount
 
+    // Fetch the current/most-recent published training plan
+    // Week starts on Sunday (Israeli locale)
+    const today = new Date()
+    const thisSunday = new Date(today)
+    thisSunday.setDate(today.getDate() - today.getDay())
+
+    // Use local date formatting (not toISOString which converts to UTC)
+    const fmt = (d: Date) => {
+        const y = d.getFullYear()
+        const m = String(d.getMonth() + 1).padStart(2, '0')
+        const dd = String(d.getDate()).padStart(2, '0')
+        return `${y}-${m}-${dd}`
+    }
+
+    const { data: currentPlan } = await supabase
+        .from('training_plans')
+        .select(`
+            id,
+            title,
+            workouts (
+                title,
+                description,
+                type,
+                distance_km,
+                duration_min,
+                target_pace,
+                day_of_week
+            )
+        `)
+        .eq('team_id', profile.team_id)
+        .eq('status', 'PUBLISHED')
+        .gte('week_start_date', fmt(thisSunday))
+        .lte('week_start_date', fmt(today))
+        .order('week_start_date', { ascending: false })
+        .limit(1)
+        .single()
+
     return (
         <main className="min-h-screen bg-[#f8fafc] px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 font-sans">
             <div className="max-w-xl mx-auto space-y-8">
@@ -50,6 +88,9 @@ export default async function DashboardPage() {
                 </header>
 
                 <div className="flex flex-col gap-6">
+                    {/* This Week's Training Plan */}
+                    <ThisWeekPlan plan={currentPlan} />
+
                     {!isConnected ? (
                         <>
                             {/* Action Required: Connection Status Card */}

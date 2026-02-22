@@ -35,7 +35,7 @@ export function Navigation({ role }: { role?: string | null }) {
     const navLinks = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Team Feed', href: '/dashboard/feed', icon: Rss },
-        { name: 'Calendar', href: '/dashboard/calendar', icon: CalendarDays },
+        { name: 'Schedule', href: '/dashboard/schedule', icon: CalendarDays },
     ]
 
     if (role === 'COACH' || role === 'CO_COACH') {

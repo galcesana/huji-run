@@ -32,14 +32,8 @@ export default async function TeamRosterPage() {
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-12 pt-4 md:px-10 md:pb-20 md:pt-8 font-sans">
             <div className="max-w-2xl mx-auto space-y-10">
-                <header className="flex flex-col items-center text-center gap-4 pt-4 relative">
-                    <Link
-                        href="/dashboard"
-                        className="absolute left-0 top-6 text-slate-400 hover:text-slate-900 transition-colors bg-white p-2 md:p-3 rounded-full shadow-sm hover:shadow-md border border-slate-100"
-                    >
-                        <ArrowLeft size={24} />
-                    </Link>
-                    <div className="space-y-2 mt-4 md:mt-0">
+                <header className="flex flex-col items-center text-center gap-4 pt-4">
+                    <div className="space-y-2">
                         <h1 className="text-[40px] sm:text-[48px] font-[900] text-[#0f172a] tracking-tight leading-none">
                             Team Roster<span className="text-[#fc4c02]">.</span>
                         </h1>

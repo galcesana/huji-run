@@ -91,43 +91,78 @@ export function EventCard({ event, currentUserId }: EventCardProps) {
             )}
 
             {/* Interactions Footer */}
-            <div className="border-t border-slate-100/60 p-4 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-                    <div className="flex -space-x-2 mr-2">
-                        {/* We could map user avatars here, but counting is fine for MVP */}
-                        <div className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-slate-500">
-                            <Users size={14} />
+            <div className="border-t border-slate-100/60 p-4 bg-slate-50/50 flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button
+                        onClick={() => setShowAttendees(!showAttendees)}
+                        className="flex items-center gap-2 text-sm text-slate-500 font-medium hover:text-slate-800 transition-colors group"
+                    >
+                        <div className="flex -space-x-2 mr-1">
+                            <div className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-slate-500">
+                                <Users size={14} />
+                            </div>
                         </div>
+                        <span><strong className="text-slate-700">{displayGoingCount}</strong> going</span>
+                        {displayGoingCount > 0 && (
+                            showAttendees
+                                ? <ChevronUp size={14} className="text-slate-400" />
+                                : <ChevronDown size={14} className="text-slate-400" />
+                        )}
+                    </button>
+
+                    <div className="flex gap-2 w-full sm:w-auto">
+                        <button
+                            onClick={() => handleRsvp('GOING')}
+                            disabled={isPending}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all
+                                ${optimisticRsvp === 'GOING'
+                                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20'
+                                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200'}
+                            `}
+                        >
+                            <CheckCircle2 size={18} strokeWidth={optimisticRsvp === 'GOING' ? 3 : 2} />
+                            I'm In
+                        </button>
+                        <button
+                            onClick={() => handleRsvp('NOT_GOING')}
+                            disabled={isPending}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all
+                                ${optimisticRsvp === 'NOT_GOING'
+                                    ? 'bg-red-500 text-white shadow-md shadow-red-500/20'
+                                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200'}
+                            `}
+                        >
+                            <XCircle size={18} strokeWidth={optimisticRsvp === 'NOT_GOING' ? 3 : 2} />
+                            Can't Make It
+                        </button>
                     </div>
-                    <span><strong className="text-slate-700">{displayGoingCount}</strong> going</span>
                 </div>
 
-                <div className="flex gap-2 w-full sm:w-auto">
-                    <button
-                        onClick={() => handleRsvp('GOING')}
-                        disabled={isPending}
-                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all
-                            ${optimisticRsvp === 'GOING'
-                                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200'}
-                        `}
-                    >
-                        <CheckCircle2 size={18} strokeWidth={optimisticRsvp === 'GOING' ? 3 : 2} />
-                        I'm In
-                    </button>
-                    <button
-                        onClick={() => handleRsvp('NOT_GOING')}
-                        disabled={isPending}
-                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all
-                            ${optimisticRsvp === 'NOT_GOING'
-                                ? 'bg-red-500 text-white shadow-md shadow-red-500/20'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200'}
-                        `}
-                    >
-                        <XCircle size={18} strokeWidth={optimisticRsvp === 'NOT_GOING' ? 3 : 2} />
-                        Can't Make It
-                    </button>
-                </div>
+                {/* Expandable Attendees List */}
+                {showAttendees && displayGoingCount > 0 && (
+                    <div className="pt-3 border-t border-slate-100 space-y-2 animate-in slide-in-from-top-2 duration-200">
+                        <h5 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1">Attending</h5>
+                        <div className="space-y-1 max-h-[200px] overflow-y-auto">
+                            {(event.event_rsvps || []).filter((r: any) => r.status === 'GOING').map((rsvp: any) => (
+                                <div key={rsvp.user_id} className="flex items-center gap-3 p-2 hover:bg-white rounded-xl transition-colors">
+                                    <div className="w-8 h-8 rounded-full bg-slate-100 flex-shrink-0 overflow-hidden relative">
+                                        {rsvp.profiles?.avatar_url ? (
+                                            <Image src={rsvp.profiles.avatar_url} alt="User" fill className="object-cover" sizes="32px" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-[10px] font-bold text-slate-400 capitalize">
+                                                {rsvp.profiles?.full_name?.charAt(0) || '?'}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <span className="font-[600] text-[14px] text-slate-700">
+                                        {rsvp.profiles?.full_name || 'Team Member'}
+                                    </span>
+                                    <CheckCircle2 size={14} className="text-emerald-500 ml-auto" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </Card>
     )
