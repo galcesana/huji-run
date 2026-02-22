@@ -116,3 +116,99 @@ export async function removeAthlete(userId: string) {
 
     revalidatePath('/admin')
 }
+
+export async function createBroadcast(formData: FormData) {
+    const supabase = await checkCoach()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return { error: 'Unauthorized' }
+
+    // Get coach's team
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('team_id')
+        .eq('id', user.id)
+        .single()
+
+    const title = formData.get('title') as string
+    const content = formData.get('content') as string
+    const postType = formData.get('postType') as string || 'UPDATE'
+    const imageUrl = formData.get('imageUrl') as string
+
+    if (!content) return { error: 'Content is required' }
+
+    const { error } = await supabase
+        .from('posts')
+        .insert({
+            user_id: user.id,
+            team_id: profile!.team_id,
+            content: content,
+            title: title || null,
+            image_url: imageUrl || null,
+            post_type: postType,
+            status: 'PUBLISHED' // Broadcasts go live immediately for now
+        })
+
+    if (error) {
+        console.error('Failed to create broadcast:', error)
+        return { error: 'Failed to broadcast message' }
+    }
+
+    revalidatePath('/dashboard/feed')
+    revalidatePath('/admin')
+    return { success: true }
+}
+
+export async function createEvent(formData: FormData) {
+    const supabase = await checkCoach()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return { error: 'Unauthorized' }
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('team_id')
+        .eq('id', user.id)
+        .single()
+
+    const title = formData.get('title') as string
+    const eventType = formData.get('eventType') as string
+    const location = formData.get('location') as string
+    const description = formData.get('description') as string
+    const startDate = formData.get('startDate') as string
+    const startTime = formData.get('startTime') as string
+    const repeatWeekly = formData.get('repeatWeekly') === 'true'
+
+    if (!title || !startDate || !startTime || !location) {
+        return { error: 'Please fill in all required fields' }
+    }
+
+    // Combine date and time strings directly to ensure valid timestamptz formatting
+    // Assumes local timezone of the coach submitting it (handled by browser HTML inputs)
+    const datetimeStr = `${startDate}T${startTime}:00`
+    const startsAt = new Date(datetimeStr).toISOString()
+
+    const { error } = await supabase
+        .from('events')
+        .insert({
+            team_id: profile!.team_id,
+            created_by: user.id,
+            title,
+            type: eventType,
+            description,
+            location,
+            starts_at: startsAt,
+            // Optional: MVP auto-calculates ends_at as 2 hours later
+            ends_at: new Date(new Date(startsAt).getTime() + 2 * 60 * 60 * 1000).toISOString(),
+            repeat_weekly: repeatWeekly
+        })
+
+    if (error) {
+        console.error('Failed to create event:', error)
+        return { error: 'Failed to schedule event' }
+    }
+
+    revalidatePath('/dashboard/calendar') // Assuming we will build this soon
+    revalidatePath('/admin')
+    return { success: true }
+}

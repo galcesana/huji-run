@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Settings, Menu as MenuIcon, X, LayoutDashboard, Rss, ShieldCheck, ChevronDown } from 'lucide-react'
+import { Settings, Menu as MenuIcon, X, LayoutDashboard, Rss, ShieldCheck, ChevronDown, CalendarDays } from 'lucide-react'
 
 export function Navigation({ role }: { role?: string | null }) {
     const pathname = usePathname()
@@ -35,6 +35,7 @@ export function Navigation({ role }: { role?: string | null }) {
     const navLinks = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Team Feed', href: '/dashboard/feed', icon: Rss },
+        { name: 'Calendar', href: '/dashboard/calendar', icon: CalendarDays },
     ]
 
     if (role === 'COACH' || role === 'CO_COACH') {

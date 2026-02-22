@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button'
 import { ShieldCheck, UserCheck, UserX, Mail, ArrowLeft, Clock, Users, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { RemoveAthleteButton } from '@/components/admin/RemoveAthleteButton'
+import { BroadcastForm } from '@/components/admin/BroadcastForm'
+import { EventForm } from '@/components/admin/EventForm'
 
 export default async function AdminPage() {
     // 1. Verify Coach Access using memoized profile
@@ -74,6 +76,18 @@ export default async function AdminPage() {
                         <p className="text-[18px] text-[#64748b] font-medium">Team management & athlete review</p>
                     </div>
                 </header>
+
+                {/* Section 0: Broadcast Messages */}
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                        <h2 className="text-[20px] font-[800] text-[#0f172a] px-2">Announcements</h2>
+                        <BroadcastForm />
+                    </div>
+                    <div className="space-y-4">
+                        <h2 className="text-[20px] font-[800] text-[#0f172a] px-2">Team Calendar</h2>
+                        <EventForm />
+                    </div>
+                </section>
 
                 {/* Section 1: Join Requests */}
                 <section className="space-y-8">

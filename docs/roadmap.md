@@ -18,15 +18,14 @@ Based on the "Definition of Useful": *Coach can approve members, members connect
 - [x] **Clean Rejection:** Automatic user purging on request rejection.
 - [x] **RLS Hardening:** Admin-client overrides for critical onboarding paths.
 
-## Phase 3: Strava & Social Feed 🚧
-**Goal:** Activity data and team spirit.
-- [x] **Strava Webhooks:** Live activity listener implemented.
-- [x] **Data Normalization:** Runs stored in `activities` table.
-- [ ] **Feed Socials:** Kudos and Comments interactions.
-- [ ] **Activity Maps:** Dynamic polyline rendering on feed cards.
+## Phase 3: Coach Management Hub & Team Feed 🚧
+**Goal:** Empower coaches with structural tools and centralized broadcast capabilities.
+- [ ] **Coach-Only Feed:** Coaches broadcast updates, images, and training plans. Athletes can only read, like, and comment.
+- [ ] **Weekly Training Plans:** Coaches publish structured workouts with detailed interval blocks (`jsonb`).
+- [ ] **Engagement Tracking:** Athletes mark "Today's Workout" as done.
 
-## Phase 4: Coach Insights & Meetups 📅
-**Goal:** High-value coordination.
-- [ ] **Consistency Stats:** Weekly volume & leaderboards.
-- [ ] **Event System:** Create meetups with RSVP and route links.
-- [ ] **Team Milestones:** Automatic "Member Joined" and "PB" cards.
+## Phase 4: Team Calendar & Meetups 📅
+**Goal:** High-value coordination for practices and events.
+- [ ] **Event System:** Coaches schedule local/UTC-aware events with recurrence rules.
+- [ ] **Athlete RSVPs:** Strict Going/Not Going tracking.
+- [ ] **Attendance Verification:** Coaches mark true attendance vs RSVPs.
