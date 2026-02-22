@@ -33,6 +33,8 @@ import { Suspense } from "react";
 import { ServerNavigation } from "@/components/layout/ServerNavigation";
 import { NavigationSkeleton } from "@/components/layout/NavigationSkeleton";
 
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
+        <ScrollToTop />
         <Suspense fallback={<NavigationSkeleton />}>
           <ServerNavigation />
         </Suspense>
