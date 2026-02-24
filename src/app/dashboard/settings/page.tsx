@@ -3,10 +3,9 @@ import { redirect } from 'next/navigation'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Activity, Trash2 } from 'lucide-react'
-import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
 import NextImage from 'next/image'
 import { DeleteAccountButton } from '@/components/settings/DeleteAccountButton'
+import { disconnectStrava, logout } from './actions'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -22,14 +21,6 @@ export default async function SettingsPage() {
         .select('*')
         .eq('user_id', user.id)
         .single()
-
-    const disconnectStrava = async () => {
-        'use server'
-        const sb = await createClient()
-        await sb.from('strava_accounts').delete().eq('user_id', user.id)
-        revalidatePath('/dashboard')
-        redirect('/dashboard')
-    }
 
     return (
         <main className="min-h-screen bg-[#f8fafc] px-6 pb-6 pt-4 md:px-10 md:pb-10 md:pt-8 font-sans">
@@ -76,12 +67,7 @@ export default async function SettingsPage() {
 
                     <Card className="p-7 bg-white border-0 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] rounded-[24px]">
                         <h2 className="text-[20px] font-[700] text-[#0f172a] tracking-tight mb-6">Account</h2>
-                        <form action={async () => {
-                            'use server'
-                            const sb = await createClient()
-                            await sb.auth.signOut()
-                            redirect('/login')
-                        }}>
+                        <form action={logout}>
                             <Button variant="outline" className="w-full sm:w-auto text-slate-700 font-[600] rounded-[12px] h-11 px-6 border-slate-200 hover:bg-slate-50">
                                 Log out
                             </Button>

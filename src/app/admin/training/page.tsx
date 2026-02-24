@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
 import { getProfile } from '@/lib/supabase/data'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { TrainingPlanBuilder } from '@/components/admin/TrainingPlanBuilder'
@@ -8,8 +7,7 @@ import { PlansList } from '@/components/admin/PlansList'
 
 export default async function TrainingPage() {
     const profile = await getProfile()
-    if (!profile) redirect('/login')
-    if (profile.role !== 'COACH' && profile.role !== 'CO_COACH') redirect('/dashboard')
+    if (!profile) return null // layout handles redirect
 
     const supabase = await createClient()
 

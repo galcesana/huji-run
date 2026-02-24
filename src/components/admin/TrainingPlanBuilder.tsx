@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { createTrainingPlan } from '@/app/admin/actions'
+import { getThisSunday } from '@/lib/dates'
 import { Dumbbell, Plus, X, ChevronDown, ChevronUp } from 'lucide-react'
 
 const DAY_LABELS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -25,17 +26,6 @@ interface WorkoutEntry {
     distanceKm: string
     durationMin: string
     targetPace: string
-}
-
-function getThisSunday(): string {
-    const today = new Date()
-    const day = today.getDay()
-    const sun = new Date(today)
-    sun.setDate(today.getDate() - day)
-    const year = sun.getFullYear()
-    const month = String(sun.getMonth() + 1).padStart(2, '0')
-    const d = String(sun.getDate()).padStart(2, '0')
-    return `${year}-${month}-${d}`
 }
 
 function emptyWorkout(dayOfWeek: number): WorkoutEntry {

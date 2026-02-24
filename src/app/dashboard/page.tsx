@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Activity, CheckCircle, AlertCircle, Users } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getUser, getProfile } from '@/lib/supabase/data'
+import { toLocalDateStr } from '@/lib/dates'
 import { redirect } from 'next/navigation'
 import { ThisWeekPlan } from '@/components/dashboard/ThisWeekPlan'
 
@@ -39,14 +40,6 @@ export default async function DashboardPage() {
     const thisSunday = new Date(today)
     thisSunday.setDate(today.getDate() - today.getDay())
 
-    // Use local date formatting (not toISOString which converts to UTC)
-    const fmt = (d: Date) => {
-        const y = d.getFullYear()
-        const m = String(d.getMonth() + 1).padStart(2, '0')
-        const dd = String(d.getDate()).padStart(2, '0')
-        return `${y}-${m}-${dd}`
-    }
-
     const { data: currentPlan } = await supabase
         .from('training_plans')
         .select(`
@@ -64,8 +57,8 @@ export default async function DashboardPage() {
         `)
         .eq('team_id', profile.team_id)
         .eq('status', 'PUBLISHED')
-        .gte('week_start_date', fmt(thisSunday))
-        .lte('week_start_date', fmt(today))
+        .gte('week_start_date', toLocalDateStr(thisSunday))
+        .lte('week_start_date', toLocalDateStr(today))
         .order('week_start_date', { ascending: false })
         .limit(1)
         .single()

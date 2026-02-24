@@ -16,7 +16,7 @@ export async function joinTeam(prevState: any, formData: FormData) {
     if (!user) redirect('/login')
 
     // 2. Find Team by Code
-    const { data: team, error } = await supabase
+    const { data: team, error } = await adminClient
         .from('teams')
         .select('id')
         .eq('join_code', code)

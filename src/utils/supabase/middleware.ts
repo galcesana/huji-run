@@ -38,13 +38,13 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        !request.nextUrl.pathname.startsWith('/') // Landing page is public
-    ) {
-        // no user, potentially respond by redirecting the user to the login page
+    const publicPaths = ['/', '/login', '/signup', '/verify-email', '/auth', '/api']
+    const isPublic = publicPaths.some(p =>
+        request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p + '/')
+    )
+
+    if (!user && !isPublic) {
+        // no user on a protected route — redirect to login
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)

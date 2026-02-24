@@ -103,7 +103,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
 
                         {post.image_url && post.post_type === 'IMAGE' && (
                             <div className="mt-4 rounded-[16px] overflow-hidden bg-slate-100 border border-slate-200/50">
-                                <img src={post.image_url} alt={post.title || "Post media"} className="w-full h-auto max-h-[400px] object-cover" />
+                                <Image src={post.image_url} alt={post.title || "Post media"} width={600} height={400} className="w-full h-auto max-h-[400px] object-cover" />
                             </div>
                         )}
 

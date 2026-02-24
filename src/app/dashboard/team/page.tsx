@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import NextImage from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 
@@ -58,7 +59,7 @@ export default async function TeamRosterPage() {
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-[14px] bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100 flex-shrink-0">
                                             {athlete.avatar_url ? (
-                                                <img src={athlete.avatar_url} alt={athlete.full_name} className="w-full h-full object-cover" />
+                                                <NextImage src={athlete.avatar_url} alt={athlete.full_name || ''} width={44} height={44} className="w-full h-full object-cover" />
                                             ) : (
                                                 <span className="text-lg font-bold text-slate-400">{athlete.full_name?.charAt(0) || 'U'}</span>
                                             )}

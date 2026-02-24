@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUser, getProfile } from '@/lib/supabase/data'
 import { redirect } from 'next/navigation'
 import { ScheduleViewer } from '@/components/schedule/ScheduleViewer'
+import { toLocalDateStr } from '@/lib/dates'
 
 export default async function SchedulePage() {
     const user = await getUser()
@@ -36,7 +37,13 @@ export default async function SchedulePage() {
         .order('week_start_date', { ascending: false })
         .limit(52)
 
-    // Fetch all events (past + future for browsing)
+    // Window events to ±reasonable range (4 weeks past, 12 weeks future)
+    const now = new Date()
+    const rangeStart = new Date(now)
+    rangeStart.setDate(now.getDate() - 28) // 4 weeks ago
+    const rangeEnd = new Date(now)
+    rangeEnd.setDate(now.getDate() + 84) // 12 weeks ahead
+
     const { data: events } = await supabase
         .from('events')
         .select(`
@@ -58,8 +65,9 @@ export default async function SchedulePage() {
             )
         `)
         .eq('team_id', profile.team_id)
+        .gte('starts_at', rangeStart.toISOString())
+        .lte('starts_at', rangeEnd.toISOString())
         .order('starts_at', { ascending: true })
-        .limit(200)
 
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-4 md:px-8 md:pb-8 pt-4 md:pt-8 font-sans">

@@ -59,34 +59,17 @@ export async function deleteAccount() {
 
     const adminClient = await createAdminClient()
 
-    // 1. Log out the user first (clear cookies)
+    // Log out the user first (clear cookies)
     await supabase.auth.signOut()
 
-    // 2. Cascading Delete Dependent Data
-    console.log('Cleanup: Deleting posts...')
-    await adminClient.from('posts').delete().eq('user_id', user.id)
-
-    console.log('Cleanup: Deleting activities...')
-    await adminClient.from('activities').delete().eq('user_id', user.id)
-
-    console.log('Cleanup: Deleting join requests...')
-    await adminClient.from('join_requests').delete().eq('user_id', user.id)
-
-    console.log('Cleanup: Deleting strava accounts...')
-    await adminClient.from('strava_accounts').delete().eq('user_id', user.id)
-
-    // 3. Delete the auth record & profile
-    console.log('Final Delete: Removing auth user...')
+    // Delete auth user — ON DELETE CASCADE on profiles(id) → auth.users
+    // handles all child tables (posts, activities, strava_accounts, join_requests, etc.)
     const { error: authError } = await adminClient.auth.admin.deleteUser(user.id)
 
     if (authError) {
         console.error('Failed to delete user from auth:', authError)
-        return { error: `Auth Error: ${authError.message}` }
+        return { error: `Failed to delete account: ${authError.message}` }
     }
-
-    // 4. Explicitly delete profile (last step)
-    console.log('Final Delete: Removing profile...')
-    await adminClient.from('profiles').delete().eq('id', user.id)
 
     redirect('/login')
 }

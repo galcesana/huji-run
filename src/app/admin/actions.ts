@@ -130,10 +130,10 @@ export async function createBroadcast(formData: FormData) {
         .eq('id', user.id)
         .single()
 
-    const title = formData.get('title') as string
-    const content = formData.get('content') as string
-    const postType = formData.get('postType') as string || 'UPDATE'
-    const imageUrl = formData.get('imageUrl') as string
+    const title = ((formData.get('title') as string) || '').trim().slice(0, 200)
+    const content = ((formData.get('content') as string) || '').trim().slice(0, 2000)
+    const postType = (formData.get('postType') as string) || 'UPDATE'
+    const imageUrl = ((formData.get('imageUrl') as string) || '').trim()
 
     if (!content) return { error: 'Content is required' }
 
@@ -171,12 +171,12 @@ export async function createEvent(formData: FormData) {
         .eq('id', user.id)
         .single()
 
-    const title = formData.get('title') as string
-    const eventType = formData.get('eventType') as string
-    const location = formData.get('location') as string
-    const description = formData.get('description') as string
-    const startDate = formData.get('startDate') as string
-    const startTime = formData.get('startTime') as string
+    const title = ((formData.get('title') as string) || '').trim().slice(0, 200)
+    const eventType = (formData.get('eventType') as string) || 'PRACTICE'
+    const location = ((formData.get('location') as string) || '').trim().slice(0, 300)
+    const description = ((formData.get('description') as string) || '').trim().slice(0, 2000)
+    const startDate = ((formData.get('startDate') as string) || '').trim()
+    const startTime = ((formData.get('startTime') as string) || '').trim()
     const repeatWeekly = formData.get('repeatWeekly') === 'true'
 
     if (!title || !startDate || !startTime || !location) {
@@ -240,9 +240,11 @@ export async function createTrainingPlan(formData: {
 
     if (!profile?.team_id) return { error: 'No team found' }
 
-    if (!formData.title || !formData.weekStartDate) {
+    if (!formData.title?.trim() || !formData.weekStartDate) {
         return { error: 'Title and week start date are required' }
     }
+
+    const planTitle = formData.title.trim().slice(0, 200)
 
     // 1. Create the plan (DRAFT by default)
     const { data: plan, error: planError } = await supabase
@@ -250,7 +252,7 @@ export async function createTrainingPlan(formData: {
         .insert({
             team_id: profile.team_id,
             created_by: user.id,
-            title: formData.title,
+            title: planTitle,
             week_start_date: formData.weekStartDate,
             status: 'DRAFT'
         })

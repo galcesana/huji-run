@@ -1,13 +1,8 @@
-import { getProfile } from '@/lib/supabase/data'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { EventForm } from '@/components/admin/EventForm'
 
 export default async function EventsPage() {
-    const profile = await getProfile()
-    if (!profile) redirect('/login')
-    if (profile.role !== 'COACH' && profile.role !== 'CO_COACH') redirect('/dashboard')
 
     return (
         <main className="min-h-screen bg-[#f8fafc] px-4 pb-12 pt-4 md:px-10 md:pb-20 md:pt-8 font-sans">

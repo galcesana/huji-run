@@ -63,43 +63,7 @@ const EVENT_STYLE: Record<string, { label: string; bg: string; text: string; emo
 }
 
 // ── Helpers ────────────────────────────────────────────────────
-
-/** Format a Date to YYYY-MM-DD using LOCAL timezone (not UTC) */
-function toLocalDateStr(d: Date): string {
-    const year = d.getFullYear()
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-}
-
-function getSundayDate(d: Date): Date {
-    const day = d.getDay()
-    const sun = new Date(d)
-    sun.setDate(d.getDate() - day)
-    sun.setHours(0, 0, 0, 0)
-    return sun
-}
-
-function formatWeekRange(sundayStr: string): string {
-    const sun = new Date(sundayStr + 'T12:00:00') // noon to avoid TZ edge
-    const sat = new Date(sun)
-    sat.setDate(sun.getDate() + 6)
-    const opts: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' }
-    return `${sun.toLocaleDateString('en-US', opts)} — ${sat.toLocaleDateString('en-US', { ...opts, year: 'numeric' })}`
-}
-
-function shiftWeek(dateStr: string, weeks: number): string {
-    const d = new Date(dateStr + 'T12:00:00') // noon to avoid TZ edge
-    d.setDate(d.getDate() + weeks * 7)
-    return toLocalDateStr(d)
-}
-
-function getDateForDow(sundayStr: string, dow: number): Date {
-    const sun = new Date(sundayStr + 'T12:00:00') // noon to avoid TZ edge
-    const d = new Date(sun)
-    d.setDate(sun.getDate() + dow)
-    return d
-}
+import { toLocalDateStr, getSundayDate, formatWeekRange, shiftWeek, getDateForDow } from '@/lib/dates'
 
 // ── RSVP Sub-component ───────────────────────────────────────
 

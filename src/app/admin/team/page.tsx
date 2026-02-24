@@ -1,7 +1,7 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { getProfile } from '@/lib/supabase/data'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import NextImage from 'next/image'
 import { ArrowLeft, UserCheck, UserX, Mail, Clock, Users } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -10,8 +10,7 @@ import { approveRequest, rejectRequest } from '../actions'
 
 export default async function TeamManagementPage() {
     const profile = await getProfile()
-    if (!profile) redirect('/login')
-    if (profile.role !== 'COACH' && profile.role !== 'CO_COACH') redirect('/dashboard')
+    if (!profile) return null // layout handles redirect
 
     const adminClient = await createAdminClient()
     const supabase = await createClient()
@@ -90,7 +89,7 @@ export default async function TeamManagementPage() {
                                             <div className="flex items-center gap-4">
                                                 <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm ring-1 ring-slate-100">
                                                     {req.user.avatar_url ? (
-                                                        <img src={req.user.avatar_url} alt={req.user.full_name} className="w-full h-full object-cover" />
+                                                        <NextImage src={req.user.avatar_url} alt={req.user.full_name || ''} width={56} height={56} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-xl font-bold text-slate-400 capitalize">{req.user.full_name?.[0]}</span>
                                                     )}
@@ -162,7 +161,7 @@ export default async function TeamManagementPage() {
                                     <div className="flex items-center gap-4">
                                         <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center overflow-hidden grayscale group-hover:grayscale-0 transition-all">
                                             {athlete.avatar_url ? (
-                                                <img src={athlete.avatar_url} alt={athlete.full_name} className="w-full h-full object-cover" />
+                                                <NextImage src={athlete.avatar_url} alt={athlete.full_name || ''} width={44} height={44} className="w-full h-full object-cover" />
                                             ) : (
                                                 <span className="text-sm font-bold text-slate-400 capitalize">{athlete.full_name?.[0]}</span>
                                             )}
